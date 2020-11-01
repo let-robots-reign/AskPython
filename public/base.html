@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>AskPython</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/base.css">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
+        <a id="main_label" class="navbar-brand" href="#">
+            <div>
+                <h1 id="site-title">AskPython</h1>
+                <img src="../static/img/python_logo.png" alt="Логотип"/>
+            </div>
+        </a>
+
+        <div class="input-group" id="search-box">
+            <input class="form-control form-control-lg" type="search" placeholder="Введите запрос"
+                   aria-label="Введите запрос">
+            <span class="input-group-append">
+                <button class="btn btn-lg btn-outline-secondary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </span>
+        </div>
+
+        <div id="user-tools">
+            <button id="ask-question" class="btn btn-outline-success btn-lg" type="submit">Задать вопрос</button>
+            <img id="user-pic" src="../static/img/profile_pic.jpg" alt="Аватар"/>
+
+            <div id="user-dropdown" class="dropdown">
+                <a class="dropdown-toggle" href="#" id="user-menu" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    let_robots_reign
+                </a>
+                <div class="dropdown-menu" aria-labelledby="user-menu">
+                    <a class="dropdown-item" href="#">Профиль</a>
+                    <a class="dropdown-item" href="#">Настройки</a>
+                    <a class="dropdown-item" href="#">Выйти</a>
+                </div>
+            </div>
+        </div>
+
+    </nav>
+
+</header>
+
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-9"></div>
+
+            <div class="col-3">
+                <h2>Популярные теги</h2>
+                <div class="bg-light shadow-sm" id="tags-container">
+                    <ul class="d-flex d-inline-flex">
+                        <li><a href="#">Django</a></li>
+                        <li><a href="#">numpy</a></li>
+                        <li><a href="#">Flask</a></li>
+                    </ul>
+                </div>
+
+                <h2>Лучшие пользователи</h2>
+                <div class="bg-light shadow-sm" id="best-users-container">
+                    <ul class="d-flex d-inline-flex">
+                        <li><a href="#">van_rossum_1956</a></li>
+                        <li><a href="#">lutz_2k20</a></li>
+                        <li><a href="#">let_robots_reign</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<footer class="page-footer">
+    <div class="footer-copyright text-center">
+        <span class="text-muted">Автор: Алексей Зотов, АПО-13</span>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/d8773369b4.js" crossorigin="anonymous"></script>
+
+</body>
+</html>
