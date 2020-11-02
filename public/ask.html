@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/ask.css">
 </head>
 <body>
 <header>
@@ -50,8 +51,42 @@
 
 <main>
     <div class="container">
-        <div class="row">
-            <div class="col-9 pr-5 mt-2"></div>
+        <div class="row mt-3">
+            <div class="col-9 pr-5">
+                <h2>Создать вопрос</h2>
+                <div class="container bg-light shadow-sm">
+                    <form id="create-form">
+                        <div class="form-group row p-3">
+                            <label for="input-title" class="col-sm-3 col-form-label">Заголовок вопроса</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="input-title"
+                                       placeholder="Введите заголовок">
+                                <em id="invalid-title" class="invalid-input">Заполните это поле</em>
+                            </div>
+                        </div>
+
+                        <div class="form-group row p-3">
+                            <label for="input-content" class="col-sm-3 col-form-label">Заголовок вопроса</label>
+                            <div class="col-sm-9">
+                                <textarea class="form-control" id="input-content"
+                                          placeholder="Введите текст вопроса"></textarea>
+                                <em id="invalid-content" class="invalid-input">Заполните это поле</em>
+                            </div>
+                        </div>
+
+                        <div class="form-group row p-3">
+                            <label for="input-tags" class="col-sm-3 col-form-label">Теги</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="input-tags"
+                                       placeholder="Теги вопроса">
+                                <em id="invalid-tags" class="invalid-input">Заполните это поле</em>
+                            </div>
+                        </div>
+                    </form>
+
+                    <a id="create-button" class="btn btn-success btn-lg m-3">Опубликовать</a>
+                </div>
+            </div>
 
             <aside id="aside-info" class="col-3">
                 <h2>Популярные теги</h2>
@@ -93,6 +128,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/d8773369b4.js" crossorigin="anonymous"></script>
+<script src="../static/js/ask.js"></script>
 
 </body>
 </html>

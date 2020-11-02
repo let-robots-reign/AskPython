@@ -1,0 +1,14 @@
+#create-form {
+    margin-top: 30px;
+}
+
+#create-button {
+    color: white;
+}
+
+em.invalid-input {
+    color: orangered;
+    margin-left: 10px;
+    font-style: normal;
+    visibility: hidden;
+}
