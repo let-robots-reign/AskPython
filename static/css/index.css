@@ -1,0 +1,63 @@
+div.headings {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+div.headings * {
+    display: inline;
+    margin-right: 80px;
+}
+
+.question-card {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.left-side {
+    text-align: center;
+    margin: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.left-side img {
+    margin-bottom: 10px;
+}
+
+.like-dislike i {
+    display: block;
+}
+
+.question-title {
+    margin-top: 10px;
+}
+
+.answers-and-tags {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 20px;
+}
+
+.answers-and-tags * {
+    display: inline;
+}
+
+.link-to-answers {
+    margin-right: 15px;
+}
+
+.post-rating {
+    font-size: 20px;
+}
+
+.btn-circle {
+    width: 25px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+ul.pagination {
+    padding-bottom: 30px;
+}
