@@ -1,3 +1,26 @@
+/* Sticky footer from Bootstrap documentation */
+:root {
+    --footer-height: 60px;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: var(--footer-height); /* Margin bottom by footer height */
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: var(--footer-height); /* Set the fixed height of the footer here */
+    line-height: var(--footer-height); /* Vertically center the text there */
+}
+
+
 #main_label div {
     display: flex;
     align-items: center;
@@ -17,4 +40,19 @@
 
 #ask-question, #user-pic, #user-menu {
     margin-right: 16px;
+}
+
+#aside-info {
+    margin-top: 50px;
+}
+
+#aside-info ul {
+    list-style-type: none;
+    padding: 20px;
+}
+
+.tags-list {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
