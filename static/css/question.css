@@ -1,0 +1,19 @@
+.answer-card {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.question-description {
+    margin-top: 15px;
+}
+
+.mark-correct {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 20px;
+}
+
+#answer {
+    min-height: 200px;
+    margin-bottom: 20px;
+}
