@@ -6,11 +6,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/login_signup.css">
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
-        <a id="main_label" class="navbar-brand" href="#">
+        <a id="main_label" class="navbar-brand" href="index.html">
             <div>
                 <h1 id="site-title">AskPython</h1>
                 <img src="../static/img/python_logo.png" alt="Логотип"/>
@@ -43,15 +44,51 @@
                 </div>
             </div>
         </div>
-
     </nav>
-
 </header>
 
 <main>
     <div class="container">
         <div class="row">
-            <div class="col-9 pr-5 mt-2"></div>
+            <div class="col-5" id="login-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4 mt-1">Войти в аккаунт</h3>
+                        <em id="invalid-content" class="invalid-input">Заполните это поле</em>
+                        <form>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <label for="user-login" class="input-group-text"><span><i
+                                                class="fas fa-user"></i></span></label>
+                                    </div>
+                                    <input id="user-login" class="form-control" placeholder="Почта или логин"
+                                           maxlength="100" type="email">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <label for="user-password" class="input-group-text"><span><i
+                                                class="fas fa-lock"></i></span></label>
+                                    </div>
+                                    <input id="user-password" class="form-control" placeholder="*******"
+                                           maxlength="20" type="password">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-block">Войти</button>
+                            </div>
+                            <p class="text-center"><a href="#" class="btn btn-light">Забыли пароль?</a></p>
+                            <p class="text-center"><a href="#" class="btn btn-link">Создать аккаунт</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4"></div>
 
             <aside id="aside-info" class="col-3">
                 <h2>Популярные теги</h2>

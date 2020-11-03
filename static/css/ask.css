@@ -2,6 +2,10 @@
     margin-top: 30px;
 }
 
+#input-content {
+    min-height: 200px;
+}
+
 #create-button {
     color: white;
 }
