@@ -32,9 +32,7 @@ $(document).ready(function() {
 
         const is_correct = validate_form(title, content, tags);
         if (is_correct) {
-            alert("OK!")
-        } else {
-            alert("Fail!")
+            document.location.href = "question.html"
         }
     })
 })

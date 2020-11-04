@@ -6,10 +6,6 @@
     min-height: 200px;
 }
 
-#create-button {
-    color: white;
-}
-
 em.invalid-input {
     color: orangered;
     margin-left: 10px;
