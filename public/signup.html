@@ -54,7 +54,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 class="card-title text-center mb-4 mt-1">Регистрация</h3>
-                        <form action="index.html" class="needs-validation" novalidate>
+                        <form action="index.html" enctype="multipart/form-data" class="needs-validation" novalidate>
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -107,6 +107,22 @@
                                            maxlength="20" type="password" required>
                                     <div class="invalid-feedback">
                                         Заполните это поле
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <label for="user-avatar" class="input-group-text"><span><i
+                                                class="fas fa-image"></i></span></label>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="user-avatar" required>
+                                        <label class="input-group-text custom-file-label" for="user-avatar">Выберите аватар</label>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Выберите файл
                                     </div>
                                 </div>
                             </div>
@@ -170,6 +186,7 @@
         crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/d8773369b4.js" crossorigin="anonymous"></script>
 <script src="../static/js/validation.js"></script>
+<script src="../static/js/signup.js"></script>
 
 </body>
 </html>
