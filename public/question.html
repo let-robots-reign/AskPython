@@ -61,7 +61,7 @@
                             <div class="like-dislike">
                                 <button class="upvote-btn btn btn-primary btn-circle"><i class="fas fa-chevron-up"></i>
                                 </button>
-                                <i class="post-rating">120</i>
+                                <i class="post-rating">0</i>
                                 <button class="downvote-btn btn btn-primary btn-circle"><i
                                         class="fas fa-chevron-down"></i></button>
                             </div>
@@ -70,7 +70,8 @@
                             <h2 class="question-title">Question here!</h2>
                             <p class="question-description">Description of a question</p>
                             <div class="answers-and-tags">
-                                <p class="question-tags">Теги: <a href="index_for_tag.html">django</a> <a href="index_for_tag.html">pip</a></p>
+                                <p class="question-tags">Теги: <a href="index_for_tag.html">django</a> <a
+                                        href="index_for_tag.html">pip</a></p>
                             </div>
                         </div>
                     </div>
@@ -85,7 +86,7 @@
                             <div class="like-dislike">
                                 <button class="upvote-btn btn btn-primary btn-circle"><i class="fas fa-chevron-up"></i>
                                 </button>
-                                <i class="post-rating">120</i>
+                                <i class="post-rating">0</i>
                                 <button class="downvote-btn btn btn-primary btn-circle"><i
                                         class="fas fa-chevron-down"></i></button>
                             </div>
@@ -109,7 +110,7 @@
                             <div class="like-dislike">
                                 <button class="upvote-btn btn btn-primary btn-circle"><i class="fas fa-chevron-up"></i>
                                 </button>
-                                <i class="post-rating">120</i>
+                                <i class="post-rating">0</i>
                                 <button class="downvote-btn btn btn-primary btn-circle"><i
                                         class="fas fa-chevron-down"></i></button>
                             </div>
@@ -133,7 +134,7 @@
                             <div class="like-dislike">
                                 <button class="upvote-btn btn btn-primary btn-circle"><i class="fas fa-chevron-up"></i>
                                 </button>
-                                <i class="post-rating">120</i>
+                                <i class="post-rating">0</i>
                                 <button class="downvote-btn btn btn-primary btn-circle"><i
                                         class="fas fa-chevron-down"></i></button>
                             </div>
@@ -150,12 +151,32 @@
                     </div>
                 </div>
 
+                <nav id="pagination">
+                    <ul class="pagination pagination-lg">
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
                 <div class="divider py-1 bg-light my-3"></div>
 
-                <div class="enter-answer form-group">
-                    <textarea class="form-control" id="answer" placeholder="Введите свой ответ"></textarea>
-                    <button class="btn btn-success" type="submit">Отправить ответ</button>
-                </div>
+                <form>
+                    <div class="enter-answer form-group">
+                        <textarea class="form-control" id="answer" placeholder="Введите свой ответ" required></textarea>
+                        <button class="btn btn-success" type="submit">Отправить ответ</button>
+                    </div>
+                </form>
             </div>
 
             <aside id="aside-info" class="col-3">
@@ -203,6 +224,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/d8773369b4.js" crossorigin="anonymous"></script>
+<script src="../static/js/index.js"></script>
 
 </body>
 </html>
