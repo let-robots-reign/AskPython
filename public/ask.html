@@ -55,13 +55,15 @@
             <div class="col-9 pr-5">
                 <h2>Создать вопрос</h2>
                 <div class="container bg-light shadow-sm mb-3">
-                    <form id="create-form">
+                    <form action="question.html" id="create-form" class="needs-validation" novalidate>
                         <div class="form-group row p-3">
                             <label for="input-title" class="col-sm-3 col-form-label">Заголовок вопроса</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" id="input-title"
-                                       maxlength="100" placeholder="Введите заголовок">
-                                <em id="invalid-title" class="invalid-input">Заполните это поле</em>
+                                       maxlength="100" placeholder="Введите заголовок" required>
+                                <div class="invalid-feedback">
+                                    Заполните это поле
+                                </div>
                             </div>
                         </div>
 
@@ -69,8 +71,10 @@
                             <label for="input-content" class="col-sm-3 col-form-label">Заголовок вопроса</label>
                             <div class="col-sm-9">
                                 <textarea class="form-control" id="input-content"
-                                          placeholder="Введите текст вопроса"></textarea>
-                                <em id="invalid-content" class="invalid-input">Заполните это поле</em>
+                                          placeholder="Введите текст вопроса" required></textarea>
+                                <div class="invalid-feedback">
+                                    Заполните это поле
+                                </div>
                             </div>
                         </div>
 
@@ -78,13 +82,15 @@
                             <label for="input-tags" class="col-sm-3 col-form-label">Теги</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" id="input-tags"
-                                       placeholder="Теги вопроса">
-                                <em id="invalid-tags" class="invalid-input">Заполните это поле</em>
+                                       placeholder="Теги вопроса" required>
+                                <div class="invalid-feedback">
+                                    Заполните это поле
+                                </div>
                             </div>
                         </div>
-                    </form>
 
-                    <a id="create-button" class="btn btn-success btn-lg m-3 text-white">Опубликовать</a>
+                        <button id="create-button" class="btn btn-success btn-lg m-3" type="submit">Опубликовать</button>
+                    </form>
                 </div>
             </div>
 
@@ -134,7 +140,7 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
 <script src="https://kit.fontawesome.com/d8773369b4.js" crossorigin="anonymous"></script>
-<script src="../static/js/ask.js"></script>
+<script src="../static/js/validation.js"></script>
 
 </body>
 </html>

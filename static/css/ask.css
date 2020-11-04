@@ -5,10 +5,3 @@
 #input-content {
     min-height: 200px;
 }
-
-em.invalid-input {
-    color: orangered;
-    margin-left: 10px;
-    font-style: normal;
-    visibility: hidden;
-}
