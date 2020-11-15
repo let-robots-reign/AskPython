@@ -29,3 +29,15 @@ def question_page(request, pk):
     return render(request, 'question_page.html', {
         'question': question
     })
+
+
+def ask_question(request):
+    return render(request, 'ask.html')
+
+
+def login(request):
+    return render(request, 'login.html')
+
+
+def signup(request):
+    return render(request, 'signup.html')

@@ -23,5 +23,9 @@ urlpatterns = [
     path('new/', views.new_questions, name='new_questions'),
     path('hot/', views.hot_questions, name='hot_questions'),
     path('question/<int:pk>/', views.question_page, name='question_page'),
+    path('ask/', views.ask_question, name='ask_question'),
+    path('login/', views.login, name='login'),
+    path('signup/', views.signup, name='signup'),
+
     path('', views.new_questions),
 ]

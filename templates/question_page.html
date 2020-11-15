@@ -1,0 +1,52 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% block link-css %}
+    <link rel="stylesheet" href='{% static 'css/questions_list.css' %}'/>
+    <link rel="stylesheet" href='{% static 'css/question.css' %}'/>
+{% endblock link-css %}
+
+{% block main-content %}
+    {% include 'include/one_question.html' %}
+
+    <div class="divider py-1 bg-light my-3"></div>
+
+    {% for answer in question.range_of_answers %}
+        {% include 'include/one_answer.html' %}
+    {% endfor %}
+
+    <div class="divider py-1 bg-light my-3"></div>
+
+    <form>
+        <div class="enter-answer form-group">
+            <textarea class="form-control" id="answer" placeholder="Введите свой ответ" required></textarea>
+            <button class="btn btn-success" type="submit">Отправить ответ</button>
+        </div>
+    </form>
+
+{% endblock main-content %}
+
+{% block pagination %}
+    <nav>
+        <ul class="pagination pagination-lg">
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endblock pagination %}
+
+{% block link-js %}
+    <script src="{% static 'js/likes.js' %}"></script>
+{% endblock link-js %}
