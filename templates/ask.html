@@ -12,7 +12,7 @@
 
 {% block main-content %}
     <div class="container bg-light shadow-sm mb-3">
-        <form action="{% url 'question_page' %}" id="create-form" class="needs-validation" novalidate>
+        <form action="{% url 'question_page' pk=1 %}" id="create-form" class="needs-validation" novalidate>
             <div class="form-group row p-3">
                 <label for="input-title" class="col-sm-3 col-form-label">Заголовок вопроса</label>
                 <div class="col-sm-9">

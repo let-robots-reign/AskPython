@@ -14,7 +14,7 @@
 {% endblock main-headings %}
 
 {% block main-content %}
-    {% for question in questions %}
+    {% for question in page_obj.object_list %}
         {% include 'include/one_question.html' %}
     {% endfor %}
 {% endblock main-content %}

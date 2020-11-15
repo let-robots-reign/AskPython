@@ -12,7 +12,7 @@
 
     <div class="divider py-1 bg-light my-3"></div>
 
-    {% for answer in question.range_of_answers %}
+    {% for answer in page_obj.object_list %}
         {% include 'include/one_answer.html' %}
     {% endfor %}
 
