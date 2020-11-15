@@ -3,13 +3,13 @@
 {% load static %}
 
 {% block link-css %}
-    <link rel="stylesheet" href='{% static 'css/questions_list.css' %}'/>
+    <link rel="stylesheet" href="{% static 'css/questions_list.css' %}">
 {% endblock link-css %}
 
 {% block main-headings %}
     <div class="headings">
-        <h2>Новые вопросы</h2>
-        <h4><a href="{% url 'hot_questions' %}">Горячие вопросы</a></h4>
+        <h2>Вопросы по тегу</h2>
+        <h4>{{ tag }}</h4>
     </div>
 {% endblock main-headings %}
 

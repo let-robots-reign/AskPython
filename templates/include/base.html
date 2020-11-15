@@ -18,28 +18,30 @@
 <main>
     <div class="container">
         <div class="row">
-            <div class="col-9 pr-5 mt-2">
-                {% block main-headings %}
-                {% endblock main-headings %}
+            {% block left-side %}
+                <div class="col-9 pr-5 mt-2">
+                    {% block main-headings %}
+                    {% endblock main-headings %}
 
-                {% block main-content %}
-                {% endblock main-content %}
-            </div>
+                    {% block main-content %}
+                    {% endblock main-content %}
+                </div>
+            {% endblock left-side %}
 
             <aside id="aside-info" class="col-3">
                 {% block aside-right %}
                     <h2>Популярные теги</h2>
                     <div class="bg-light shadow-sm" id="tags-container">
                         <ul class="tags-list">
-                            <li><a href="#">Django</a></li>
-                            <li><a href="#">numpy</a></li>
-                            <li><a href="#">Flask</a></li>
-                            <li><a href="#">MySQL</a></li>
-                            <li><a href="#">Python</a></li>
-                            <li><a href="#">Android</a></li>
-                            <li><a href="#">verylooooongtagname</a></li>
-                            <li><a href="#">iOS</a></li>
-                            <li><a href="#">Linux</a></li>
+                            <li><a href="{% url 'tag_questions' tag="Django" %}">Django</a></li>
+                            <li><a href="{% url 'tag_questions' tag="numpy" %}">numpy</a></li>
+                            <li><a href="{% url 'tag_questions' tag="Flask" %}">Flask</a></li>
+                            <li><a href="{% url 'tag_questions' tag="MySql" %}">MySQL</a></li>
+                            <li><a href="{% url 'tag_questions' tag="Python" %}">Python</a></li>
+                            <li><a href="{% url 'tag_questions' tag="Android" %}">Android</a></li>
+                            <li><a href="{% url 'tag_questions' tag="verylooooongtagname" %}">verylooooongtagname</a></li>
+                            <li><a href="{% url 'tag_questions' tag="iOS" %}">iOS</a></li>
+                            <li><a href="{% url 'tag_questions' tag="Linux" %}">Linux</a></li>
                         </ul>
                     </div>
 

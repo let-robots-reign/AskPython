@@ -5,10 +5,10 @@
         <div class="col-2 left-side">
             <img src="{% static 'img/profile_pic.jpg' %}" alt="Аватар">
             <div class="like-dislike">
-                <button class="upvote-btn btn btn-primary btn-circle"><i class="fas fa-chevron-up"></i>
+                <button class="upvote-btn btn btn-secondary btn-circle"><i class="fas fa-chevron-up"></i>
                 </button>
                 <i class="post-rating">{{ question.num_of_likes }}</i>
-                <button class="downvote-btn btn btn-primary btn-circle"><i
+                <button class="downvote-btn btn btn-secondary btn-circle"><i
                         class="fas fa-chevron-down"></i></button>
             </div>
         </div>
@@ -19,8 +19,8 @@
                 <a href="{% url 'question_page' pk=question.id %}"
                    class="link-to-answers">Ответы({{ question.num_of_answers }})</a>
                 <p class="question-tags">Теги:
-                    {% for tag in question.tags %}
-                        <a href="/index_for_tag">{{ tag }}</a>
+                    {% for t in question.tags %}
+                        <a href="{% url 'tag_questions' tag=t %}">{{ t }}</a>
                     {% endfor %}
             </div>
         </div>

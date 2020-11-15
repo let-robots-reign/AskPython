@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 questions = [
     {'id': _ + 1,
-     'title': 'Question\'s title!',
+     'title': f'Title of a question #{_ + 1}!',
      'description': 'Description of a question',
      'num_of_answers': 3,
      'range_of_answers': range(3),
@@ -31,6 +31,13 @@ def question_page(request, pk):
     })
 
 
+def tag_questions(request, tag):
+    return render(request, 'questions_for_tag.html', {
+        'questions': questions,
+        'tag': tag
+    })
+
+
 def ask_question(request):
     return render(request, 'ask.html')
 
@@ -41,3 +48,7 @@ def login(request):
 
 def signup(request):
     return render(request, 'signup.html')
+
+
+def settings(request):
+    return render(request, 'settings.html')
