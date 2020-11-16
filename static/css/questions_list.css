@@ -28,6 +28,15 @@ div.headings * {
     display: block;
 }
 
+.user-nickname {
+    font-size: 14px;
+}
+
+.creation-date {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
 .question-title {
     margin-top: 10px;
 }
@@ -35,10 +44,9 @@ div.headings * {
 .answers-and-tags {
     position: absolute;
     bottom: 0;
-    margin-bottom: 20px;
 }
 
-.answers-and-tags * {
+.answers-and-tags *:not(.creation-date) {
     display: inline;
 }
 

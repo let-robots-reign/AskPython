@@ -4,8 +4,8 @@
     <div class="row">
         <div class="col-2 left-side">
             <img src="{{ answer.author.profile_pic.url }}" alt="Аватар">
+            <p class="user-nickname">{{ answer.author.user_name }}</p>
             <div class="like-dislike">
-
                 <button class="upvote-btn btn btn-secondary btn-circle"><i class="fas fa-chevron-up"></i>
                 </button>
                 <i class="post-rating">{{ answer.rating }}</i>
@@ -15,15 +15,18 @@
         </div>
         <div class="col-10 right-side">
             <p class="question-description">{{ answer.content|linebreaks }}</p>
-            <div class="form-check mark-correct">
-                {% if answer.is_marked_correct %}
-                    <input class="form-check-input" type="checkbox" id="correct-checkbox-2" checked>
-                {% else %}
-                    <input class="form-check-input" type="checkbox" id="correct-checkbox-2">
-                {% endif %}
-                <label class="form-check-label" for="correct-checkbox-2">
-                    Отметить как решение
-                </label>
+            <div class="bottom-part">
+                <div class="form-check">
+                    {% if answer.is_marked_correct %}
+                        <input class="form-check-input" type="checkbox" id="correct-checkbox-2" checked>
+                    {% else %}
+                        <input class="form-check-input" type="checkbox" id="correct-checkbox-2">
+                    {% endif %}
+                    <label class="form-check-label" for="correct-checkbox-2">
+                        Отметить как решение
+                    </label>
+                </div>
+                <p class="creation-date text-muted">Опубликовано: {{ answer.creation_date }}</p>
             </div>
         </div>
     </div>

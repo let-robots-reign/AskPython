@@ -4,6 +4,7 @@
     <div class="row">
         <div class="col-2 left-side">
             <img src="{{ question.author.profile_pic.url }}" alt="Аватар">
+            <p class="user-nickname">{{ question.author.user_name }}</p>
             <div class="like-dislike">
                 <button class="upvote-btn btn btn-secondary btn-circle"><i class="fas fa-chevron-up"></i>
                 </button>
@@ -22,6 +23,7 @@
                     {% for t in question.tags.all %}
                         <a href="{% url 'tag_questions' tag=t %}">{{ t }}</a>
                     {% endfor %}
+                <p class="creation-date text-muted">Опубликовано: {{ question.creation_date }}</p>
             </div>
         </div>
     </div>

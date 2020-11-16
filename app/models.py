@@ -48,7 +48,7 @@ class Question(models.Model):
     title = models.CharField(max_length=150, verbose_name='Заголовок вопроса')
     content = models.TextField(verbose_name='Текст вопроса')
     rating = models.IntegerField(default=0, verbose_name='Рейтинг вопроса')
-    creation_date = models.DateField(auto_now_add=True, verbose_name='Дата создания вопроса')
+    creation_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания вопроса')
     tags = models.ManyToManyField('Tag', verbose_name='Теги', related_name='questions', related_query_name='question')
     # users who voted for the question
     votes = models.ManyToManyField('Profile', blank=True, verbose_name="Оценки вопроса", through='QuestionVote',
@@ -78,7 +78,7 @@ class Answer(models.Model):
                                          related_query_name="answer")
     content = models.TextField(verbose_name='Текст ответа')
     rating = models.IntegerField(default=0, verbose_name='Рейтинг ответа')
-    creation_date = models.DateField(auto_now_add=True, verbose_name='Дата создания ответа')
+    creation_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания ответа')
     is_marked_correct = models.BooleanField(default=False, verbose_name='Отмечен ли как верный')
     # users who voted for the question
     votes = models.ManyToManyField('Profile', blank=True, verbose_name="Оценки вопроса", through='AnswerVote',
