@@ -3,8 +3,9 @@
 <div class="answer-card container bg-light shadow-sm">
     <div class="row">
         <div class="col-2 left-side">
-            <img src="{% static 'img/profile_pic.jpg' %}" alt="Аватар">
+            <img src="{{ answer.author.profile_pic.url }}" alt="Аватар">
             <div class="like-dislike">
+
                 <button class="upvote-btn btn btn-secondary btn-circle"><i class="fas fa-chevron-up"></i>
                 </button>
                 <i class="post-rating">{{ answer.rating }}</i>

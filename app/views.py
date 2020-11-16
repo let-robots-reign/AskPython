@@ -19,7 +19,7 @@ def paginate(objects_list, request, per_page=20):
 
 
 def new_questions(request):
-    questions = Question.objects.new_questions().all()
+    questions = Question.objects.new_questions()
     page = paginate(questions, request, 20)
     return render(request, 'new_questions.html', {
         'page_obj': page
@@ -27,7 +27,7 @@ def new_questions(request):
 
 
 def hot_questions(request):
-    questions = Question.objects.hot_questions().all()
+    questions = Question.objects.hot_questions()
     page = paginate(questions, request, 20)
     return render(request, 'hot_questions.html', {
         'page_obj': page
@@ -50,7 +50,7 @@ def question_page(request, pk):
 
 def tag_questions(request, tag):
     questions = Question.objects.questions_for_tag(tag).all()
-    if len(questions == 0):
+    if len(questions) > 0:
         page = paginate(questions, request, 20)
         return render(request, 'questions_for_tag.html', {
             'page_obj': page,
