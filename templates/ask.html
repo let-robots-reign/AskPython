@@ -1,0 +1,56 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% block link-css %}
+    <link rel="stylesheet" href="{% static 'css/ask.css' %}">
+{% endblock link-css %}
+
+{% block main-headings %}
+    <h2>Создать вопрос</h2>
+{% endblock main-headings %}
+
+{% block main-content %}
+    <div class="container bg-light shadow-sm mb-3">
+        <form action="{% url 'question_page' pk=1 %}" id="create-form" class="needs-validation" novalidate>
+            <div class="form-group row p-3">
+                <label for="input-title" class="col-sm-3 col-form-label">Заголовок вопроса</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="input-title"
+                           maxlength="100" placeholder="Введите заголовок" required>
+                    <div class="invalid-feedback">
+                        Заполните это поле
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row p-3">
+                <label for="input-content" class="col-sm-3 col-form-label">Заголовок вопроса</label>
+                <div class="col-sm-9">
+                                <textarea class="form-control" id="input-content"
+                                          placeholder="Введите текст вопроса" required></textarea>
+                    <div class="invalid-feedback">
+                        Заполните это поле
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row p-3">
+                <label for="input-tags" class="col-sm-3 col-form-label">Теги</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="input-tags"
+                           placeholder="Теги вопроса" required>
+                    <div class="invalid-feedback">
+                        Заполните это поле
+                    </div>
+                </div>
+            </div>
+
+            <button id="create-button" class="btn btn-success btn-lg m-3" type="submit">Опубликовать</button>
+        </form>
+    </div>
+{% endblock main-content %}
+
+{% block link-js %}
+    <script src="{% static 'js/validation.js' %}"></script>
+{% endblock link-js %}

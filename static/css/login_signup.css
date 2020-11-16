@@ -1,0 +1,7 @@
+#login-card {
+    margin-top: 60px;
+}
+
+.custom-file-label::after {
+  content: "Загрузить";
+}

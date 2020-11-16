@@ -1,0 +1,29 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% block link-css %}
+    <link rel="stylesheet" href='{% static 'css/questions_list.css' %}'/>
+{% endblock link-css %}
+
+{% block main-headings %}
+    <div class="headings">
+        <h2>Горячие вопросы</h2>
+        <h4><a href="{% url 'new_questions' %}">Новые вопросы</a></h4>
+    </div>
+{% endblock main-headings %}
+
+{% block main-content %}
+    {% for question in page_obj.object_list %}
+        {% include 'include/one_question.html' %}
+    {% endfor %}
+{% endblock main-content %}
+
+{% block pagination %}
+    {% include 'include/pagination.html' %}
+{% endblock pagination %}
+
+
+{% block link-js %}
+    <script src="{% static 'js/likes.js' %}"></script>
+{% endblock link-js %}

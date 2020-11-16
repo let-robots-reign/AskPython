@@ -1,0 +1,40 @@
+{% load static %}
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between">
+        <a id="main_label" class="navbar-brand" href='{% url 'root' %}'>
+            <div>
+                <h1 id="site-title">AskPython</h1>
+                <img src='{% static 'img/python_logo.png' %}' alt="Логотип"/>
+            </div>
+        </a>
+
+        <div class="input-group" id="search-box">
+            <input class="form-control form-control-lg" type="search" placeholder="Введите запрос"
+                   aria-label="Введите запрос">
+            <span class="input-group-append">
+                <button class="btn btn-lg btn-outline-secondary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </span>
+        </div>
+
+        <div id="user-tools">
+            <a href="{% url 'ask_question' %}" id="ask-question" class="btn btn-outline-success btn-lg text-success">Задать вопрос</a>
+            <img id="user-pic" src='{% static 'img/profile_pic.jpg' %}' alt="Аватар"/>
+
+            <div id="user-dropdown" class="dropdown">
+                <a class="dropdown-toggle" href="#" id="user-menu" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    let_robots_reign
+                </a>
+                <div class="dropdown-menu" aria-labelledby="user-menu">
+                    <a class="dropdown-item" href="#">Профиль</a>
+                    <a class="dropdown-item" href="{% url 'settings' %}">Настройки</a>
+                    <a class="dropdown-item" href="#">Выйти</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+</header>

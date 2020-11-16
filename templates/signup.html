@@ -1,0 +1,104 @@
+{% extends 'include/base.html' %}
+
+{% load static %}
+
+{% block link-css %}
+    <link rel="stylesheet" href="{% static 'css/login_signup.css' %}">
+{% endblock link-css %}
+
+{% block left-side %}
+    <div class="col-5" id="login-card">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4 mt-1">Регистрация</h3>
+                <form action="new_questions.html" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label for="user-email" class="input-group-text"><span><i
+                                        class="fas fa-envelope"></i></span></label>
+                            </div>
+                            <input id="user-email" class="form-control" placeholder="Почта"
+                                   maxlength="50" type="email" required>
+                            <div class="invalid-feedback">
+                                Введите корректный email
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label for="user-login" class="input-group-text"><span><i
+                                        class="fas fa-user"></i></span></label>
+                            </div>
+                            <input id="user-login" class="form-control" placeholder="Логин"
+                                   maxlength="30" type="text" required>
+                            <div class="invalid-feedback">
+                                Заполните это поле
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label for="user-password" class="input-group-text"><span><i
+                                        class="fas fa-lock"></i></span></label>
+                            </div>
+                            <input id="user-password" class="form-control" placeholder="Пароль"
+                                   maxlength="20" type="password" required>
+                            <div class="invalid-feedback">
+                                Заполните это поле
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label for="user-repeat-password" class="input-group-text"><span><i
+                                        class="fas fa-lock"></i></span></label>
+                            </div>
+                            <input id="user-repeat-password" class="form-control" placeholder="Повторите пароль"
+                                   maxlength="20" type="password" required>
+                            <div class="invalid-feedback">
+                                Заполните это поле
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label for="user-avatar" class="input-group-text"><span><i
+                                        class="fas fa-image"></i></span></label>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="user-avatar" required>
+                                <label class="input-group-text custom-file-label" for="user-avatar">Выберите
+                                    аватар</label>
+                            </div>
+                            <div class="invalid-feedback">
+                                Выберите файл
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit">Создать аккаунт</button>
+                    </div>
+                    <p class="text-center"><a href="{% url 'login' %}" class="btn btn-link">Уже есть аккаунт, войти</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-4"></div>
+{% endblock left-side %}
+
+{% block link-js %}
+    <script src="{% static 'js/validation.js' %}"></script>
+    <script src="{% static 'js/signup.js' %}"></script>
+{% endblock link-js %}
