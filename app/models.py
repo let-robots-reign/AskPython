@@ -27,6 +27,19 @@ class Tag(models.Model):
         verbose_name_plural = 'Теги'
 
 
+class QuestionManager(models.Manager):
+    def new_questions(self):
+        return self.order_by("-creation_date")
+
+    def hot_questions(self):
+        # "горячими" вопросами назовем вопросы за последние 2 дня с наивысшим рейтингом
+        return self.filter(creation_date__gte=(timezone.now() - timezone.timedelta(days=1))).order_by("-rating")
+        #self.filter(creation_date__lte=(timezone.now() - timezone.timedelta(days=1))).order_by("-rating")
+
+    def questions_for_tag(self, tag):
+        return self.filter(tags__tag_name=tag)
+
+
 class Question(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)
     title = models.CharField(max_length=150, verbose_name='Заголовок вопроса')
@@ -36,17 +49,28 @@ class Question(models.Model):
     tags = models.ManyToManyField(Tag, verbose_name='Теги', related_name='questions', related_query_name='question')
     # TODO: liked users
 
+    objects = QuestionManager()
+
     def __str__(self):
         return self.title
+
+    def get_answers_count(self):
+        return self.answers.count()
 
     class Meta:
         verbose_name = 'Вопрос'
         verbose_name_plural = 'Вопросы'
 
 
+class AnswerManager(models.Manager):
+    def best_answers(self):
+        return self.order_by("-rating")
+
+
 class Answer(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    related_question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="answers", related_query_name="answer")
+    related_question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="answers",
+                                         related_query_name="answer")
     content = models.TextField(verbose_name='Текст ответа')
     rating = models.IntegerField(default=0, verbose_name='Рейтинг ответа')
     creation_date = models.DateField(auto_now_add=True, verbose_name='Дата создания ответа')
