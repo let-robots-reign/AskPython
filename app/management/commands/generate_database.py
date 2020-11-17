@@ -34,11 +34,10 @@ class Command(BaseCommand):
         self.generate_tags(tags_count)
         self.generate_questions(questions_count)
         self.generate_answers(answers_per_question_count)
-        self.generate_votes(votes_per_question_number)
 
     def generate_users(self, count):
         for i in range(count):
-            User.objects.create_user(fake.first_name(), fake.email(),
+            User.objects.create_user(fake.unique.first_name(), fake.email(),
                                      fake.password(length=fake.random_int(min=8, max=15)))
 
     def generate_profiles(self, count):
@@ -71,8 +70,22 @@ class Command(BaseCommand):
 
             question.tags.set(sample(tags, randint(1, len(tags))))
 
-    def generate_answers(self, count):
-        pass
+            question.votes.set(sample(profiles, randint(1, len(profiles))),
+                               through_defaults={"mark": VoteManager.LIKE})
+            question.votes.set(sample(profiles, randint(1, len(profiles))),
+                               through_defaults={"mark": VoteManager.DISLIKE})
+            question.update_rating()
 
-    def generate_votes(self, count):
-        pass
+    def generate_answers(self, count):
+        profiles = list(Profile.objects.values_list("id", flat=True))
+        questions = list(Question.objects.values_list("id", flat=True))
+        for question_id in questions:
+            for i in range(count):
+                answer = Answer.objects.create(
+                    author_id=choice(profiles),
+                    related_question_id=question_id,
+                    content=fake.text(),
+                    creation_date=fake.date_time_between(make_aware(datetime(year=2020, month=10, day=1),
+                                                                    timezone.get_current_timezone()),
+                                                         timezone.now())
+                )
