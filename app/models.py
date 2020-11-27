@@ -7,12 +7,12 @@ from django_resized import ResizedImageField
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    user_name = models.CharField(max_length=30, verbose_name='Имя пользователя')
+    nickname = models.CharField(max_length=30, verbose_name='Ник пользователя')
     # resizing the picture to not break the html markup
     profile_pic = ResizedImageField(size=[50, 64], quality=100, upload_to='avatars', verbose_name='Аватар')
 
     def __str__(self):
-        return self.user_name
+        return self.nickname
 
     class Meta:
         verbose_name = 'Пользователь'

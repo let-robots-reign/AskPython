@@ -46,12 +46,12 @@ class Command(BaseCommand):
         profile_pics = ["avatars/profile_pic.jpeg", "avatars/sample.jpeg"]
 
         for i in range(count):
-            Profile.objects.create(user_id=users_ids[i], user_name=fake.last_name(),
+            Profile.objects.create(user_id=users_ids[i], nickname=fake.last_name(),
                                    profile_pic=choice(profile_pics))
 
     def generate_tags(self, count):
         for i in range(count):
-            Tag.objects.create(tag_name=fake.word())
+            Tag.objects.create(tag_name=fake.unique.word())
 
     def generate_questions(self, count):
         profiles = list(Profile.objects.values_list("id", flat=True))

@@ -30,6 +30,7 @@ urlpatterns = [
     path('ask/', views.ask_question, name='ask_question'),
     path('login/', views.login, name='login'),
     path('signup/', views.signup, name='signup'),
+    path('logout/', views.logout, name='logout'),
     path('settings/', views.settings, name='settings'),
     path('tag/<str:tag>', views.tag_questions, name='tag_questions'),
     path('', views.new_questions, name='root'),

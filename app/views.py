@@ -1,8 +1,11 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from app.models import Profile, Question, Answer
 from django.core.exceptions import ObjectDoesNotExist
+
+from django.contrib import auth
+from app.forms import LoginForm
 
 
 def paginate(objects_list, request, per_page=20):
@@ -65,7 +68,22 @@ def ask_question(request):
 
 
 def login(request):
-    return render(request, 'login.html')
+    if request.method == 'GET':
+        form = LoginForm()
+    else:
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            user = auth.authenticate(request, **form.cleaned_data)
+            if user is not None:
+                auth.login(request, user)
+                return redirect('/')  # TODO: правильный redirect
+
+    return render(request, 'login.html', {'form': form})
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/')
 
 
 def signup(request):
