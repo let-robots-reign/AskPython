@@ -20,7 +20,7 @@ class Profile(models.Model):
 
 
 class Tag(models.Model):
-    tag_name = models.CharField(primary_key=True, max_length=30, verbose_name='Название тега')
+    tag_name = models.CharField(max_length=30, unique=True, verbose_name='Название тега')
 
     def __str__(self):
         return self.tag_name
@@ -35,9 +35,8 @@ class QuestionManager(models.Manager):
         return self.order_by("-creation_date")
 
     def hot_questions(self):
-        # "горячими" вопросами назовем вопросы за последние 2 дня с наивысшим рейтингом
-        return self.filter(creation_date__gte=(timezone.now() - timezone.timedelta(days=1))).order_by("-rating")
-        # self.filter(creation_date__lte=(timezone.now() - timezone.timedelta(days=1))).order_by("-rating")
+        # "горячими" вопросами назовем вопросы с наивысшим рейтингом
+        return self.order_by("-rating")
 
     def questions_for_tag(self, tag):
         return self.filter(tags__tag_name=tag)
@@ -84,7 +83,7 @@ class Answer(models.Model):
     rating = models.IntegerField(default=0, verbose_name='Рейтинг ответа')
     creation_date = models.DateTimeField(verbose_name='Дата создания ответа')
     is_marked_correct = models.BooleanField(default=False, verbose_name='Отмечен ли как верный')
-    # users who voted for the question
+    # users who voted for the answer
     votes = models.ManyToManyField('Profile', blank=True, verbose_name="Оценки вопроса", through='AnswerVote',
                                    related_name="voted_answer", related_query_name="voted_answer")
 
@@ -104,7 +103,6 @@ class Answer(models.Model):
 
 class VoteManager(models.Manager):
     LIKE = 1
-    NOT_GRADED = 1
     DISLIKE = -1
 
     def get_likes(self, pk):
@@ -119,8 +117,8 @@ class VoteManager(models.Manager):
 
 class QuestionVote(models.Model):
     user = models.ForeignKey('Profile', on_delete=models.CASCADE, verbose_name='Кто оценил')
-    mark = models.IntegerField(default=VoteManager.NOT_GRADED,
-                               verbose_name='Поставленная оценка')  # can be -1 = downvoted, 0 = not graded, 1 = upvoted
+    mark = models.IntegerField(default=0,
+                               verbose_name='Поставленная оценка')  # can be -1 = downvoted, 1 = upvoted
 
     objects = VoteManager()
 
@@ -136,8 +134,8 @@ class QuestionVote(models.Model):
 
 class AnswerVote(models.Model):
     user = models.ForeignKey('Profile', on_delete=models.CASCADE, verbose_name='Кто оценил')
-    mark = models.IntegerField(default=VoteManager.NOT_GRADED,
-                               verbose_name='Поставленная оценка')  # can be -1 = downvoted, 0 = not graded, 1 = upvoted
+    mark = models.IntegerField(default=0,
+                               verbose_name='Поставленная оценка')  # can be -1 = downvoted, 1 = upvoted
 
     objects = VoteManager()
 

@@ -43,7 +43,7 @@ class Command(BaseCommand):
     def generate_profiles(self, count):
         self.generate_users(count)
         users_ids = list(User.objects.values_list("id", flat=True))
-        profile_pics = ["avatars/profile_pic.jpeg"]
+        profile_pics = ["avatars/profile_pic.jpeg", "avatars/sample.jpeg"]
 
         for i in range(count):
             Profile.objects.create(user_id=users_ids[i], user_name=fake.last_name(),
@@ -56,8 +56,6 @@ class Command(BaseCommand):
     def generate_questions(self, count):
         profiles = list(Profile.objects.values_list("id", flat=True))
 
-        tags = list(Tag.objects.values_list('tag_name', flat=True))
-
         for i in range(count):
             question = Question.objects.create(
                 author_id=choice(profiles),
@@ -68,13 +66,17 @@ class Command(BaseCommand):
                                                      timezone.now())
             )
 
-            question.tags.set(sample(tags, randint(1, len(tags))))
+            tags_count = Tag.objects.count()
+            tags = list(set([Tag.objects.get(id=randint(1, tags_count)) for _ in range(randint(1, tags_count))]))
+            question.tags.set(tags)
 
+            # TODO: fix votes generation
             question.votes.set(sample(profiles, randint(1, len(profiles))),
                                through_defaults={"mark": VoteManager.LIKE})
-            question.votes.set(sample(profiles, randint(1, len(profiles))),
-                               through_defaults={"mark": VoteManager.DISLIKE})
+            #question.votes.set(sample(profiles, randint(1, len(profiles))),
+                               #through_defaults={"mark": VoteManager.DISLIKE})
             question.update_rating()
+
 
     def generate_answers(self, count):
         profiles = list(Profile.objects.values_list("id", flat=True))
