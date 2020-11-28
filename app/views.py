@@ -1,12 +1,16 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, reverse
 
-from app.models import Profile, Question, Answer
+from app.models import *
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
-from app.forms import LoginForm, AskForm
+from app.forms import *
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def paginate(objects_list, request, per_page=20):
@@ -66,6 +70,7 @@ def tag_questions(request, tag):
 
 @login_required
 def ask_question(request):
+    # TODO: show form errors
     if request.method == 'GET':
         form = AskForm()
     else:
@@ -81,6 +86,7 @@ def ask_question(request):
 
 
 def login(request):
+    # TODO: show form errors
     if request.method == 'GET':
         form = LoginForm()
     else:
@@ -100,7 +106,25 @@ def logout(request):
 
 
 def signup(request):
-    return render(request, 'signup.html')
+    # TODO: show form errors
+    if request.method == 'GET':
+        form = SignupForm()
+    else:
+        form = SignupForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = User.objects.create_user(username=form.cleaned_data['username'],
+                                            password=form.cleaned_data['password'])
+
+            Profile.objects.create(user=user, nickname=form.cleaned_data['nickname'],
+                                   profile_pic=form.cleaned_data['profile_pic'])
+
+            logger.error(user)
+            auth.login(request, user)
+            return redirect('/')  # TODO: correct redirect
+        else:
+            logger.error(form.errors)
+
+    return render(request, 'signup.html', {'form': form})
 
 
 def settings(request):

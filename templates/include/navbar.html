@@ -24,12 +24,12 @@
                 вопрос</a>
 
             {% if user.is_authenticated %}
-                <img id="user-pic" src='{% static 'img/profile_pic.jpg' %}' alt="Аватар"/>
+                <img id="user-pic" src='{{ user.profile.profile_pic.url }}' alt="Аватар"/>
 
                 <div id="user-dropdown" class="dropdown">
                     <a class="dropdown-toggle" href="#" id="user-menu" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        let_robots_reign
+                        {{ user.profile.nickname }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="user-menu">
                         <a class="dropdown-item" href="{% url 'settings' %}">Настройки</a>
