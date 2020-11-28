@@ -1,11 +1,12 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 
 from app.models import Profile, Question, Answer
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.contrib import auth
-from app.forms import LoginForm
+from django.contrib.auth.decorators import login_required
+from app.forms import LoginForm, AskForm
 
 
 def paginate(objects_list, request, per_page=20):
@@ -63,8 +64,20 @@ def tag_questions(request, tag):
         return render(request, 'blank_page.html')
 
 
+@login_required
 def ask_question(request):
-    return render(request, 'ask.html')
+    if request.method == 'GET':
+        form = AskForm()
+    else:
+        form = AskForm(data=request.POST)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.author = request.user.profile
+            question.save()
+            question.tags.set(form.cleaned_data['tags'])
+            return redirect(reverse('question_page', kwargs={'pk': question.id}))
+
+    return render(request, 'ask.html', {'form': form})
 
 
 def login(request):

@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from django.utils.timezone import make_aware
+#from django.utils.timezone import make_aware
 
 from app.models import *
 
@@ -60,10 +60,10 @@ class Command(BaseCommand):
             question = Question.objects.create(
                 author_id=choice(profiles),
                 title=fake.sentence(nb_words=3),
-                content=fake.text(),
-                creation_date=fake.date_time_between(make_aware(datetime(year=2019, month=1, day=1),
-                                                                timezone.get_current_timezone()),
-                                                     timezone.now())
+                content=fake.text()
+                # creation_date=fake.date_time_between(make_aware(datetime(year=2019, month=1, day=1),
+                #                                                 timezone.get_current_timezone()),
+                #                                      timezone.now())
             )
 
             tags_count = Tag.objects.count()
@@ -86,8 +86,8 @@ class Command(BaseCommand):
                 answer = Answer.objects.create(
                     author_id=choice(profiles),
                     related_question_id=question_id,
-                    content=fake.text(),
-                    creation_date=fake.date_time_between(make_aware(datetime(year=2020, month=10, day=1),
-                                                                    timezone.get_current_timezone()),
-                                                         timezone.now())
+                    content=fake.text()
+                    # creation_date=fake.date_time_between(make_aware(datetime(year=2020, month=10, day=1),
+                    #                                                 timezone.get_current_timezone()),
+                    #                                      timezone.now())
                 )
