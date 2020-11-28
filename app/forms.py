@@ -17,8 +17,19 @@ class SignupForm(forms.Form):
     # TODO: repeat password
     nickname = forms.CharField(max_length=50,
                                widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ник на сайте'}))
-    # TODO: set required=False and set default pic for users without one
-    profile_pic = forms.ImageField(widget=forms.FileInput(attrs={'class': 'custom-file-input', 'id': 'user-avatar'}))
+    # TODO: set default pic for users without one
+    profile_pic = forms.ImageField(required=False,
+                                   widget=forms.FileInput(attrs={'class': 'custom-file-input', 'id': 'user-avatar'}))
+
+
+# TODO: возможно, избавиться от дублирования
+class EditForm(forms.Form):
+    username = forms.CharField(max_length=50,
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Логин'}))
+    nickname = forms.CharField(max_length=50,
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ник на сайте'}))
+    profile_pic = forms.ImageField(required=False,
+                                   widget=forms.FileInput(attrs={'class': 'custom-file-input', 'id': 'user-avatar'}))
 
 
 class AskForm(forms.ModelForm):

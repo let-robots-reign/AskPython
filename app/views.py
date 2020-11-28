@@ -115,17 +115,38 @@ def signup(request):
             user = User.objects.create_user(username=form.cleaned_data['username'],
                                             password=form.cleaned_data['password'])
 
-            Profile.objects.create(user=user, nickname=form.cleaned_data['nickname'],
-                                   profile_pic=form.cleaned_data['profile_pic'])
+            profile = Profile.objects.create(user=user, nickname=form.cleaned_data['nickname'])
+            if form.cleaned_data['profile_pic'] is not None:
+                profile.profile_pic = form.cleaned_data['profile_pic']
+                profile.save()
 
-            logger.error(user)
             auth.login(request, user)
             return redirect('/')  # TODO: correct redirect
-        else:
-            logger.error(form.errors)
 
     return render(request, 'signup.html', {'form': form})
 
 
+@login_required
 def settings(request):
-    return render(request, 'settings.html')
+    # TODO: show form errors
+    if request.method == 'GET':
+        form = EditForm(initial={"username": request.user.username,
+                                 "nickname": request.user.profile.nickname})
+    else:
+        form = EditForm(request.POST, request.FILES, initial={"username": request.user.username,
+                                                              "nickname": request.user.profile.nickname})
+        if form.is_valid():
+            user = request.user
+            profile = user.profile
+            if 'username' in form.changed_data:
+                user.username = form.cleaned_data['username']
+            if 'nickname' in form.changed_data:
+                profile.nickname = form.cleaned_data['nickname']
+            if 'profile_pic' in form.changed_data:
+                profile.profile_pic = form.cleaned_data['profile_pic']
+            profile.save()
+            user.save()
+        else:
+            pass
+
+    return render(request, 'settings.html', {'form': form})
