@@ -7,7 +7,7 @@
 {% endblock link-css %}
 
 {% block left-side %}
-    <div class="col-5" id="login-card">
+    <div class="col-5 mb-3" id="login-card">
         <div class="card">
             <div class="card-body">
                 <h3 class="card-title text-center mb-4 mt-1">Регистрация</h3>
@@ -39,19 +39,18 @@
                         </div>
                     </div>
 
-                    {#                    <div class="form-group">#}
-                    {#                        <div class="input-group">#}
-                    {#                            <div class="input-group-prepend">#}
-                    {#                                <label for="user-repeat-password" class="input-group-text"><span><i#}
-                    {#                                        class="fas fa-lock"></i></span></label>#}
-                    {#                            </div>#}
-                    {#                            <input id="user-repeat-password" class="form-control" placeholder="Повторите пароль"#}
-                    {#                                   maxlength="20" type="password" required>#}
-                    {#                            <div class="invalid-feedback">#}
-                    {#                                Заполните это поле#}
-                    {#                            </div>#}
-                    {#                        </div>#}
-                    {#                    </div>#}
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label for="{{ form.confirm_password.id_for_label }}" class="input-group-text"><span><i
+                                        class="fas fa-lock"></i></span></label>
+                            </div>
+                            {{ form.confirm_password }}
+                            <div class="invalid-feedback">
+                                Заполните это поле
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <div class="input-group">

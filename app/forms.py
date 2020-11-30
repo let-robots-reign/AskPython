@@ -24,13 +24,29 @@ class SignupForm(forms.Form):
     password = forms.CharField(max_length=MAX_PASSWORD_LENGTH,
                                widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Пароль'}),
                                error_messages={'required': 'Введите пароль'})
-    # TODO: repeat password
+
+    confirm_password = forms.CharField(max_length=MAX_PASSWORD_LENGTH,
+                                       widget=forms.PasswordInput(attrs={'class': 'form-control',
+                                                                         'placeholder': 'Подтвердите пароль'}),
+                                       error_messages={'required': 'Введите подтверждение пароля'})
+
     nickname = forms.CharField(max_length=MAX_USERNAME_LENGTH,
                                widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ник на сайте'}),
                                error_messages={'required': 'Введите ник'})
 
     profile_pic = forms.ImageField(required=False,
                                    widget=forms.FileInput(attrs={'class': 'custom-file-input', 'id': 'user-avatar'}))
+
+    def clean(self):
+        cleaned_data = super(SignupForm, self).clean()
+
+        password = cleaned_data['password']
+        confirm_password = cleaned_data['confirm_password']
+        if password and confirm_password and password != confirm_password:
+            # непустые и не совпадают
+            raise forms.ValidationError('Пароли не совпадают')
+
+        return cleaned_data
 
 
 # TODO: возможно, избавиться от дублирования
