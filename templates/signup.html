@@ -39,21 +39,21 @@
                         </div>
                     </div>
 
-{#                    <div class="form-group">#}
-{#                        <div class="input-group">#}
-{#                            <div class="input-group-prepend">#}
-{#                                <label for="user-repeat-password" class="input-group-text"><span><i#}
-{#                                        class="fas fa-lock"></i></span></label>#}
-{#                            </div>#}
-{#                            <input id="user-repeat-password" class="form-control" placeholder="Повторите пароль"#}
-{#                                   maxlength="20" type="password" required>#}
-{#                            <div class="invalid-feedback">#}
-{#                                Заполните это поле#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
+                    {#                    <div class="form-group">#}
+                    {#                        <div class="input-group">#}
+                    {#                            <div class="input-group-prepend">#}
+                    {#                                <label for="user-repeat-password" class="input-group-text"><span><i#}
+                    {#                                        class="fas fa-lock"></i></span></label>#}
+                    {#                            </div>#}
+                    {#                            <input id="user-repeat-password" class="form-control" placeholder="Повторите пароль"#}
+                    {#                                   maxlength="20" type="password" required>#}
+                    {#                            <div class="invalid-feedback">#}
+                    {#                                Заполните это поле#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
 
-                     <div class="form-group">
+                    <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <label for="{{ form.nickname.id_for_label }}" class="input-group-text"><span><i
@@ -73,7 +73,8 @@
                                         class="fas fa-image"></i></span></label>
                             </div>
                             <div class="custom-file">
-                                <label class="input-group-text custom-file-label" for="{{ form.profile_pic.id_for_label }}">
+                                <label class="input-group-text custom-file-label"
+                                       for="{{ form.profile_pic.id_for_label }}">
                                     Выберите аватар</label>
                                 {{ form.profile_pic }}
                             </div>
@@ -82,6 +83,8 @@
                             </div>
                         </div>
                     </div>
+
+                    {% include 'include/form_errors.html' %}
 
                     <div class="form-group">
                         <button class="btn btn-primary btn-block" type="submit">Создать аккаунт</button>
@@ -97,6 +100,6 @@
 {% endblock left-side %}
 
 {% block link-js %}
-{#    <script src="{% static 'js/validation.js' %}"></script>#}
+    {#    <script src="{% static 'js/validation.js' %}"></script>#}
     <script src="{% static 'js/signup.js' %}"></script>
 {% endblock link-js %}

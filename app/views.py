@@ -81,6 +81,8 @@ def ask_question(request):
             question.save()
             question.tags.set(form.cleaned_data['tags'])
             return redirect(reverse('question_page', kwargs={'pk': question.id}))
+        else:
+            logger.error(form.errors.as_data())
 
     return render(request, 'ask.html', {'form': form})
 
