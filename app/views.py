@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 
 from app.models import *
 from django.core.exceptions import ObjectDoesNotExist
@@ -45,15 +45,34 @@ def hot_questions(request):
 def question_page(request, pk):
     try:
         question = Question.objects.get(id=pk)
-        answers = question.answers.best_answers()
-        page = paginate(answers, request, 20)
+    except ObjectDoesNotExist:
+        # question doesn't exist, should show 404
+        return render(request, '404_not_found.html')
+
+    answers = question.answers.best_answers()
+    page = paginate(answers, request, 20)
+    if not request.user.is_authenticated:
         return render(request, 'question_page.html', {
             'question': question,
             'page_obj': page
         })
-    except ObjectDoesNotExist:
-        # question doesn't exist, should return 404
-        return render(request, '404_not_found.html')
+
+    if request.method == 'GET':
+        form = AnswerForm()
+    else:
+        form = AnswerForm(data=request.POST)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.author = request.user.profile
+            answer.related_question = question
+            answer.save()
+            return redirect(reverse('question_page', kwargs={'pk': question.id}))
+
+    return render(request, 'question_page.html', {
+        'question': question,
+        'page_obj': page,
+        'form': form
+    })
 
 
 def tag_questions(request, tag):
@@ -70,7 +89,6 @@ def tag_questions(request, tag):
 
 @login_required
 def ask_question(request):
-    # TODO: show form errors
     if request.method == 'GET':
         form = AskForm()
     else:
@@ -81,14 +99,11 @@ def ask_question(request):
             question.save()
             question.tags.set(form.cleaned_data['tags'])
             return redirect(reverse('question_page', kwargs={'pk': question.id}))
-        else:
-            logger.error(form.errors.as_data())
 
     return render(request, 'ask.html', {'form': form})
 
 
 def login(request):
-    # TODO: show form errors
     if request.method == 'GET':
         form = LoginForm()
     else:
@@ -108,7 +123,6 @@ def logout(request):
 
 
 def signup(request):
-    # TODO: show form errors
     if request.method == 'GET':
         form = SignupForm()
     else:
@@ -130,7 +144,6 @@ def signup(request):
 
 @login_required
 def settings(request):
-    # TODO: show form errors
     if request.method == 'GET':
         form = EditForm(initial={"username": request.user.username,
                                  "nickname": request.user.profile.nickname})

@@ -1,5 +1,5 @@
 from django import forms
-from app.models import Question
+from app.models import Question, Answer
 
 
 MAX_USERNAME_LENGTH = 50
@@ -59,3 +59,12 @@ class AskForm(forms.ModelForm):
         error_messages = {'title': {'required': 'Введите заголовок'},
                           'content': {'required': 'Введите текст вопроса'},
                           'tags': {'required': 'Введите хотя бы один тег'}}
+
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = ['content']
+        widgets = {'content': forms.Textarea(attrs={'class': 'form-control mb-3',
+                                                    'placeholder': 'Введите текст ответа'})}
+        error_messages = {'content': {'required': 'Введите текст ответа'}}

@@ -20,8 +20,8 @@
         </div>
 
         <div id="user-tools">
-            <a href="{% url 'ask_question' %}" id="ask-question" class="btn btn-outline-success btn-lg text-success">Задать
-                вопрос</a>
+            <a href="{% url 'ask_question' %}" id="ask-question" class="btn btn-outline-success btn-lg text-success">
+                Задать вопрос</a>
 
             {% if user.is_authenticated %}
                 <img id="user-pic" src='{{ user.profile.profile_pic.url }}' alt="Аватар"/>
