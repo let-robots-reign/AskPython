@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.shortcuts import render, redirect, reverse
 
 from app.models import *
 from django.core.exceptions import ObjectDoesNotExist
@@ -66,7 +66,11 @@ def question_page(request, pk):
             answer.author = request.user.profile
             answer.related_question = question
             answer.save()
-            return redirect(reverse('question_page', kwargs={'pk': question.id}))
+
+            # TODO: not only scroll to right position, but also get new paginator page
+            response = redirect(reverse('question_page', kwargs={'pk': question.id}))
+            response['Location'] += f'#ans{answer.id}'
+            return response
 
     return render(request, 'question_page.html', {
         'question': question,
@@ -105,6 +109,7 @@ def ask_question(request):
 
 def login(request):
     if request.method == 'GET':
+        request.session['next_page'] = request.GET.get('next', '/')
         form = LoginForm()
     else:
         form = LoginForm(data=request.POST)
@@ -112,7 +117,7 @@ def login(request):
             user = auth.authenticate(request, **form.cleaned_data)
             if user is not None:
                 auth.login(request, user)
-                return redirect('/')  # TODO: правильный redirect
+                return redirect(request.session.pop('next_page', '/'))
 
     return render(request, 'login.html', {'form': form})
 
@@ -124,6 +129,7 @@ def logout(request):
 
 def signup(request):
     if request.method == 'GET':
+        request.session['next_page'] = request.GET.get('next', '/')
         form = SignupForm()
     else:
         form = SignupForm(request.POST, request.FILES)
@@ -137,7 +143,7 @@ def signup(request):
                 profile.save()
 
             auth.login(request, user)
-            return redirect('/')  # TODO: correct redirect
+            return redirect(request.session.pop('next_page', '/'))
 
     return render(request, 'signup.html', {'form': form})
 
@@ -161,7 +167,5 @@ def settings(request):
                 profile.profile_pic = form.cleaned_data['profile_pic']
             profile.save()
             user.save()
-        else:
-            pass
 
     return render(request, 'settings.html', {'form': form})

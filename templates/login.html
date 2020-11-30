@@ -45,7 +45,12 @@
                         <button class="btn btn-primary btn-block" type="submit">Войти</button>
                     </div>
 {#                    <p class="text-center"><a href="#" class="btn btn-light">Забыли пароль?</a></p>#}
-                    <p class="text-center"><a href="{% url 'signup' %}" class="btn btn-link">Создать аккаунт</a></p>
+                    {% if request.session.next_page %}
+                        <p class="text-center"><a href="{% url 'signup' %}?next={{ request.session.next_page }}"
+                                                  class="btn btn-link">Создать аккаунт</a></p>
+                    {% else %}
+                        <p class="text-center"><a href="{% url 'signup' %}" class="btn btn-link">Создать аккаунт</a></p>
+                    {% endif %}
                 </form>
             </div>
         </div>
