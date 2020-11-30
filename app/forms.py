@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 from app.models import Question, Answer
 
 
@@ -36,6 +37,11 @@ class SignupForm(forms.Form):
 
     profile_pic = forms.ImageField(required=False,
                                    widget=forms.FileInput(attrs={'class': 'custom-file-input', 'id': 'user-avatar'}))
+
+    def clean_username(self):
+        cleaned_data = super(SignupForm, self).clean()
+        if User.objects.filter(username=cleaned_data['username']).exists():
+            raise forms.ValidationError('Такой логин уже существует')
 
     def clean(self):
         cleaned_data = super(SignupForm, self).clean()
