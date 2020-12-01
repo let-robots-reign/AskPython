@@ -43,6 +43,8 @@ class SignupForm(forms.Form):
         if User.objects.filter(username=cleaned_data['username']).exists():
             raise forms.ValidationError('Такой логин уже существует')
 
+        return cleaned_data['username']
+
     def clean(self):
         cleaned_data = super(SignupForm, self).clean()
 
