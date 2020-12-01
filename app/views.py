@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, redirect, reverse
+from django.db import transaction
 
 from app.models import *
 from django.core.exceptions import ObjectDoesNotExist
@@ -67,7 +68,6 @@ def question_page(request, pk):
             answer.related_question = question
             answer.save()
 
-            # TODO: not only scroll to right position, but also get new paginator page
             response = redirect(reverse('question_page', kwargs={'pk': question.id}))
             response['Location'] += f'#ans{answer.id}'
             return response
@@ -101,7 +101,14 @@ def ask_question(request):
             question = form.save(commit=False)
             question.author = request.user.profile
             question.save()
-            question.tags.set(form.cleaned_data['tags'])
+
+            # пользователь может добавить и новые теги
+            tags = list(set(form.cleaned_data['tags'].split()))
+            # так как тегов может быть несколько, сделаем транзакцию
+            with transaction.atomic():
+                tags_objects = [Tag.objects.get_or_create(tag_name=tag)[0] for tag in tags]
+            question.tags.set(tags_objects)
+
             return redirect(reverse('question_page', kwargs={'pk': question.id}))
 
     return render(request, 'ask.html', {'form': form})

@@ -70,17 +70,28 @@ class EditForm(forms.Form):
 
 
 class AskForm(forms.ModelForm):
+    tags = forms.CharField(max_length=250, label='Теги',
+                           widget=forms.TextInput(attrs={"class": "form-control",
+                                                         "placeholder": "Введите теги через пробел"}),
+                           error_messages={'required': 'Введите хотя бы один тег'})
+
     class Meta:
         model = Question
-        fields = ['title', 'content', 'tags']
+        fields = ['title', 'content']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Введите заголовок'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Введите текст вопроса'}),
-            'tags': forms.SelectMultiple(attrs={'class': 'form-control'})
         }
         error_messages = {'title': {'required': 'Введите заголовок'},
-                          'content': {'required': 'Введите текст вопроса'},
-                          'tags': {'required': 'Введите хотя бы один тег'}}
+                          'content': {'required': 'Введите текст вопроса'}}
+
+    def clean(self):
+        cleaned_data = super(AskForm, self).clean()
+
+        if len(cleaned_data['tags'].split()) > 10:
+            raise forms.ValidationError("Нельзя добавить больше 10 тегов")
+
+        return cleaned_data
 
 
 class AnswerForm(forms.ModelForm):

@@ -70,7 +70,7 @@ class Command(BaseCommand):
             tags = list(set([Tag.objects.get(id=randint(1, tags_count)) for _ in range(randint(1, tags_count))]))
             question.tags.set(tags)
 
-            # TODO: fix votes generation
+            # TODO: enhance votes generation
             question.votes.set(sample(profiles, randint(1, len(profiles))),
                                through_defaults={"mark": VoteManager.LIKE})
             #question.votes.set(sample(profiles, randint(1, len(profiles))),
