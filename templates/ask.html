@@ -12,12 +12,12 @@
 
 {% block main-content %}
     <div class="container bg-light shadow-sm mb-3">
-        <form action="{% url 'question_page' pk=1 %}" id="create-form" class="needs-validation" novalidate>
+        <form method="post" id="create-form" class="needs-validation" novalidate>
+            {% csrf_token %}
             <div class="form-group row p-3">
-                <label for="input-title" class="col-sm-3 col-form-label">Заголовок вопроса</label>
+                <label for="{{ form.title.id_for_label }}" class="col-sm-3 col-form-label">Заголовок вопроса</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="input-title"
-                           maxlength="100" placeholder="Введите заголовок" required>
+                    {{ form.title }}
                     <div class="invalid-feedback">
                         Заполните это поле
                     </div>
@@ -25,10 +25,9 @@
             </div>
 
             <div class="form-group row p-3">
-                <label for="input-content" class="col-sm-3 col-form-label">Заголовок вопроса</label>
+                <label for="{{ form.content.id_for_label }}" class="col-sm-3 col-form-label">Текст вопроса</label>
                 <div class="col-sm-9">
-                                <textarea class="form-control" id="input-content"
-                                          placeholder="Введите текст вопроса" required></textarea>
+                    {{ form.content }}
                     <div class="invalid-feedback">
                         Заполните это поле
                     </div>
@@ -36,21 +35,23 @@
             </div>
 
             <div class="form-group row p-3">
-                <label for="input-tags" class="col-sm-3 col-form-label">Теги</label>
+                <label for="{{ form.tags.id_for_label }}" class="col-sm-3 col-form-label">Теги</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="input-tags"
-                           placeholder="Теги вопроса" required>
+                    {{ form.tags }}
                     <div class="invalid-feedback">
                         Заполните это поле
                     </div>
                 </div>
             </div>
+
+            {% include 'include/form_errors.html' %}
+
 
             <button id="create-button" class="btn btn-success btn-lg m-3" type="submit">Опубликовать</button>
         </form>
     </div>
 {% endblock main-content %}
 
-{% block link-js %}
-    <script src="{% static 'js/validation.js' %}"></script>
-{% endblock link-js %}
+{#{% block link-js %}#}
+{#    <script src="{% static 'js/validation.js' %}"></script>#}
+{#{% endblock link-js %}#}

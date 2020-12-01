@@ -18,6 +18,10 @@ from django.urls import path
 
 from app import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('new/', views.new_questions, name='new_questions'),
@@ -26,7 +30,8 @@ urlpatterns = [
     path('ask/', views.ask_question, name='ask_question'),
     path('login/', views.login, name='login'),
     path('signup/', views.signup, name='signup'),
-    path('settings/', views.settings, name='settings'),
-    path('/tag/<str:tag>', views.tag_questions, name='tag_questions'),
+    path('logout/', views.logout, name='logout'),
+    path('edit/', views.settings, name='settings'),
+    path('tag/<str:tag>', views.tag_questions, name='tag_questions'),
     path('', views.new_questions, name='root'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

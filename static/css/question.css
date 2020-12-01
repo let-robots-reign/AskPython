@@ -7,10 +7,10 @@
     margin-top: 15px;
 }
 
-.mark-correct {
+.bottom-part {
     position: absolute;
     bottom: 0;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 #answer {

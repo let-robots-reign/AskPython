@@ -7,21 +7,21 @@
 {% endblock link-css %}
 
 {% block left-side %}
-    <div class="col-5" id="login-card">
+    <div class="col-5 mb-3" id="login-card">
         <div class="card">
             <div class="card-body">
                 <h3 class="card-title text-center mb-4 mt-1">Войти в аккаунт</h3>
-                <form action="{% url 'new_questions' %}" class="needs-validation" novalidate>
+                <form method="post" action="{% url 'login' %}" novalidate>
+                    {% csrf_token %}
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <label for="user-login" class="input-group-text"><span><i
+                                <label for="{{ form.username.id_for_label }}" class="input-group-text"><span><i
                                         class="fas fa-user"></i></span></label>
                             </div>
-                            <input id="user-login" class="form-control" placeholder="Почта или логин"
-                                   maxlength="50" type="email" required>
+                            {{ form.username }}
                             <div class="invalid-feedback">
-                                Введите корректный email
+                                Введите корректный логин
                             </div>
                         </div>
                     </div>
@@ -29,22 +29,28 @@
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <label for="user-password" class="input-group-text"><span><i
+                                <label for="{{ form.password.id_for_label }}" class="input-group-text"><span><i
                                         class="fas fa-lock"></i></span></label>
                             </div>
-                            <input id="user-password" class="form-control" placeholder="*******"
-                                   maxlength="20" type="password" required>
+                            {{ form.password }}
                             <div class="invalid-feedback">
                                 Заполните это поле
                             </div>
                         </div>
                     </div>
 
+                    {% include 'include/form_errors.html' %}
+
                     <div class="form-group">
                         <button class="btn btn-primary btn-block" type="submit">Войти</button>
                     </div>
-                    <p class="text-center"><a href="#" class="btn btn-light">Забыли пароль?</a></p>
-                    <p class="text-center"><a href="{% url 'signup' %}" class="btn btn-link">Создать аккаунт</a></p>
+{#                    <p class="text-center"><a href="#" class="btn btn-light">Забыли пароль?</a></p>#}
+                    {% if request.session.next_page %}
+                        <p class="text-center"><a href="{% url 'signup' %}?next={{ request.session.next_page }}"
+                                                  class="btn btn-link">Создать аккаунт</a></p>
+                    {% else %}
+                        <p class="text-center"><a href="{% url 'signup' %}" class="btn btn-link">Создать аккаунт</a></p>
+                    {% endif %}
                 </form>
             </div>
         </div>
@@ -53,6 +59,6 @@
     <div class="col-4"></div>
 {% endblock left-side %}
 
-{% block link-js %}
-    <script src="{% static 'js/validation.js' %}"></script>
-{% endblock link-js %}
+{#{% block link-js %}#}
+{#    <script src="{% static 'js/validation.js' %}"></script>#}
+{#{% endblock link-js %}#}

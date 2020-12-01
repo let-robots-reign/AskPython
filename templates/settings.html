@@ -7,33 +7,32 @@
 {% endblock link-css %}
 
 {% block left-side %}
-    <div class="col-5" id="login-card">
+    <div class="col-5 mb-3" id="login-card">
         <div class="card">
             <div class="card-body">
                 <h3 class="card-title text-center mb-4 mt-1">Изменить данные</h3>
-                <form action="{% url 'new_questions' %}" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    {% csrf_token %}
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <label for="user-email" class="input-group-text"><span><i
+                                <label for="{{ form.username.id_for_label }}" class="input-group-text"><span><i
                                         class="fas fa-envelope"></i></span></label>
                             </div>
-                            <input id="user-email" class="form-control" placeholder="Почта"
-                                   maxlength="50" type="email" required>
+                            {{ form.username }}
                             <div class="invalid-feedback">
-                                Введите корректный email
+                                Введите корректный логин
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
+                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <label for="user-login" class="input-group-text"><span><i
+                                <label for="{{ form.nickname.id_for_label }}" class="input-group-text"><span><i
                                         class="fas fa-user"></i></span></label>
                             </div>
-                            <input id="user-login" class="form-control" placeholder="Логин"
-                                   maxlength="30" type="text" required>
+                            {{ form.nickname }}
                             <div class="invalid-feedback">
                                 Заполните это поле
                             </div>
@@ -47,9 +46,9 @@
                                         class="fas fa-image"></i></span></label>
                             </div>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="user-avatar" required>
-                                <label class="input-group-text custom-file-label" for="user-avatar">Изменить
-                                    аватар</label>
+                                <label class="input-group-text custom-file-label" for="{{ form.profile_pic.id_for_label }}">
+                                    {{ user.profile.profile_pic.url }}</label>
+                                {{ form.profile_pic }}
                             </div>
                             <div class="invalid-feedback">
                                 Выберите файл
@@ -57,8 +56,8 @@
                         </div>
                     </div>
 
-                    <div class="form-group mt-5">
-                        <button class="btn btn-primary btn-block" type="submit">Сохранить</button>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit">Изменить данные</button>
                     </div>
                 </form>
             </div>
@@ -70,6 +69,6 @@
 
 
 {% block link-js %}
-    <script src="{% static 'js/validation.js' %}"></script>
+{#    <script src="{% static 'js/validation.js' %}"></script>#}
     <script src="{% static 'js/signup.js' %}"></script>
 {% endblock link-js %}

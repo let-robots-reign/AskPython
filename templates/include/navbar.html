@@ -20,20 +20,26 @@
         </div>
 
         <div id="user-tools">
-            <a href="{% url 'ask_question' %}" id="ask-question" class="btn btn-outline-success btn-lg text-success">Задать вопрос</a>
-            <img id="user-pic" src='{% static 'img/profile_pic.jpg' %}' alt="Аватар"/>
+            <a href="{% url 'ask_question' %}" id="ask-question" class="btn btn-outline-success btn-lg text-success">
+                Задать вопрос</a>
 
-            <div id="user-dropdown" class="dropdown">
-                <a class="dropdown-toggle" href="#" id="user-menu" role="button"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    let_robots_reign
-                </a>
-                <div class="dropdown-menu" aria-labelledby="user-menu">
-                    <a class="dropdown-item" href="#">Профиль</a>
-                    <a class="dropdown-item" href="{% url 'settings' %}">Настройки</a>
-                    <a class="dropdown-item" href="#">Выйти</a>
+            {% if user.is_authenticated %}
+                <img id="user-pic" src='{{ user.profile.profile_pic.url }}' alt="Аватар"/>
+
+                <div id="user-dropdown" class="dropdown">
+                    <a class="dropdown-toggle" href="#" id="user-menu" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ user.profile.nickname }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="user-menu">
+                        <a class="dropdown-item" href="{% url 'settings' %}">Настройки</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Выйти</a>
+                    </div>
                 </div>
-            </div>
+            {% else %}
+                <a class="pr-2" href="{% url 'login' %}">Войти</a>
+                <a href="{% url 'signup' %}">Зарегистрироваться</a>
+            {% endif %}
         </div>
     </nav>
 

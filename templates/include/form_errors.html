@@ -1,0 +1,9 @@
+{% if form.errors %}
+    {% for key, key_errors in form.errors.as_data.items %}
+        {% for error in key_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|join:' ' }}</strong>
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
