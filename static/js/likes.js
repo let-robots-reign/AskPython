@@ -1,10 +1,10 @@
 $(document).ready(function () {
-    $(".like-dislike").each(function () {
+    $('.like-dislike').each(function () {
         let upvote_pressed = false
         let downvote_pressed = false
-        let post_rating = $(this).find(".post-rating")
-        let upvote_button = $(this).find(".upvote-btn")
-        let downvote_button = $(this).find(".downvote-btn")
+        let post_rating = $(this).find('.post-rating')
+        let upvote_button = $(this).find('.upvote-btn')
+        let downvote_button = $(this).find('.downvote-btn')
 
         upvote_button.on('click', function () {
             if (!upvote_pressed) {
@@ -22,6 +22,20 @@ $(document).ready(function () {
                 post_rating.text(parseInt(post_rating.text()) - 1)
                 upvote_pressed = false
             }
+
+            const id = $(this).attr('data-id')
+            const action = $(this).attr('data-action')
+            const vote_type = $(this).attr('data-type')
+
+            $.post({
+                url: '/vote/',
+                data: {
+                    id: id,
+                    action: action
+                }
+            }).done(function(data) {
+                console.log(data)
+            })
         })
 
         downvote_button.on('click', function () {

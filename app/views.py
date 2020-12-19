@@ -5,8 +5,10 @@ from django.db import transaction
 from app.models import *
 from django.core.exceptions import ObjectDoesNotExist
 
+from django.http import JsonResponse
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from app.forms import *
 
 import logging
@@ -176,3 +178,12 @@ def settings(request):
             user.save()
 
     return render(request, 'settings.html', {'form': form})
+
+
+@require_POST
+@login_required
+def vote(request):
+
+    data = request.POST
+    # обработка лайков
+    return JsonResponse(data)
