@@ -31,8 +31,17 @@ def paginate(objects_list, request, per_page=20):
     return page
 
 
+def add_vote_to_object(question_or_answer, user):
+    if user.is_authenticated:
+        question_or_answer.current_vote = question_or_answer.get_vote_by_user(user)
+    else:
+        question_or_answer.current_vote = None
+    return question_or_answer
+
+
 def new_questions(request):
     questions = Question.objects.new_questions()
+    questions = [add_vote_to_object(question, request.user) for question in questions]
     page = paginate(questions, request, 20)
     return render(request, 'new_questions.html', {
         'page_obj': page
@@ -41,6 +50,7 @@ def new_questions(request):
 
 def hot_questions(request):
     questions = Question.objects.hot_questions()
+    questions = [add_vote_to_object(question, request.user) for question in questions]
     page = paginate(questions, request, 20)
     return render(request, 'hot_questions.html', {
         'page_obj': page
@@ -55,11 +65,12 @@ def question_page(request, pk):
         return render(request, '404_not_found.html')
 
     answers = question.answers.best_answers()
+    answers = [add_vote_to_object(answer, request.user) for answer in answers]
     page = paginate(answers, request, 20)
     if not request.user.is_authenticated:
         # showing page without answer form
         return render(request, 'question_page.html', {
-            'question': question,
+            'question': add_vote_to_object(question, request.user),
             'page_obj': page
         })
 
@@ -78,7 +89,7 @@ def question_page(request, pk):
             return response
 
     return render(request, 'question_page.html', {
-        'question': question,
+        'question': add_vote_to_object(question, request.user),
         'page_obj': page,
         'form': form
     })
@@ -86,6 +97,7 @@ def question_page(request, pk):
 
 def tag_questions(request, tag):
     questions = Question.objects.questions_for_tag(tag).all()
+    questions = [add_vote_to_object(question, request.user) for question in questions]
     if len(questions) > 0:
         page = paginate(questions, request, 20)
         return render(request, 'questions_for_tag.html', {
@@ -185,8 +197,6 @@ def settings(request):
     return render(request, 'settings.html', {'form': form})
 
 
-# TODO: передавать оценку в template
-
 @require_POST
 def vote(request):
     if not request.user.is_authenticated:
@@ -231,10 +241,14 @@ def vote(request):
             QuestionVote.objects.create(
                 user_id=request.user.profile.id,
                 related_object_id=object_id,
-                mark=VoteManager.LIKE
+                mark=VoteManager.LIKE if action == 'upvote' else VoteManager.DISLIKE
             )
 
         question = Question.objects.get(id=object_id)
         question.update_rating()
+
+    elif object_type == 'answer':
+        # TODO: доделать аналогично
+        pass
 
     return JsonResponse(data)

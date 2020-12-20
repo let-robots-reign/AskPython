@@ -55,6 +55,7 @@ class Question(models.Model):
                                    related_name="voted_questions", related_query_name="voted_questions")
 
     objects = QuestionManager()
+    current_vote = 0
 
     def __str__(self):
         return self.title
@@ -65,6 +66,12 @@ class Question(models.Model):
 
     def get_answers_count(self):
         return self.answers.count()
+
+    def get_vote_by_user(self, user):
+        try:
+            return self.question_votes.get(user_id=user.id).mark
+        except QuestionVote.DoesNotExist:
+            return None
 
     class Meta:
         verbose_name = 'Вопрос'
@@ -89,6 +96,7 @@ class Answer(models.Model):
                                    related_name="voted_answers", related_query_name="voted_answer")
 
     objects = AnswerManager()
+    current_vote = 0
 
     def __str__(self):
         return self.content
@@ -96,6 +104,12 @@ class Answer(models.Model):
     def update_rating(self):
         self.rating = AnswerVote.objects.get_rating(self.id)
         self.save()
+
+    def get_vote_by_user(self, user):
+        try:
+            return self.answer_votes.get(user_id=user.id).mark
+        except QuestionVote.DoesNotExist:
+            return None
 
     class Meta:
         verbose_name = 'Ответ'
@@ -120,7 +134,8 @@ class QuestionVote(models.Model):
     user = models.ForeignKey('Profile', on_delete=models.CASCADE, verbose_name='Кто оценил')
     mark = models.IntegerField(default=0,
                                verbose_name='Поставленная оценка')  # can be -1 = downvoted, 1 = upvoted
-    related_object = models.ForeignKey('Question', verbose_name='Оцениваемый вопрос', on_delete=models.CASCADE)
+    related_object = models.ForeignKey('Question', related_name='question_votes',
+                                       verbose_name='Оцениваемый вопрос', on_delete=models.CASCADE)
 
     objects = VoteManager()
 
@@ -136,7 +151,8 @@ class AnswerVote(models.Model):
     user = models.ForeignKey('Profile', on_delete=models.CASCADE, verbose_name='Кто оценил')
     mark = models.IntegerField(default=0,
                                verbose_name='Поставленная оценка')  # can be -1 = downvoted, 1 = upvoted
-    related_object = models.ForeignKey('Answer', verbose_name='Оцениваемый ответ', on_delete=models.CASCADE)
+    related_object = models.ForeignKey('Answer', related_name='answer_votes',
+                                       verbose_name='Оцениваемый ответ', on_delete=models.CASCADE)
 
     objects = VoteManager()
 

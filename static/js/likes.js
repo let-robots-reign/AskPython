@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $('.like-dislike').each(function () {
+        // TODO: правильно инициализировать upvote_pressed и downvote_pressed
         let upvote_pressed = false
         let downvote_pressed = false
         let post_rating = $(this).find('.post-rating')
