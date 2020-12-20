@@ -85,12 +85,13 @@ class AskForm(forms.ModelForm):
             'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Введите текст вопроса'}),
         }
         error_messages = {'title': {'required': 'Введите заголовок'},
-                          'content': {'required': 'Введите текст вопроса'}}
+                          'content': {'required': 'Введите текст вопроса'},
+                          'tags': {'required': 'Введите хотя бы один тег'}}
 
     def clean(self):
         cleaned_data = super(AskForm, self).clean()
 
-        if len(cleaned_data['tags'].split()) > 10:
+        if 'tags' in cleaned_data and len(cleaned_data['tags'].split()) > 10:
             raise forms.ValidationError("Нельзя добавить больше 10 тегов")
 
         return cleaned_data

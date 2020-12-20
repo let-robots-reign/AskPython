@@ -185,10 +185,56 @@ def settings(request):
     return render(request, 'settings.html', {'form': form})
 
 
+# TODO: передавать оценку в template
+
 @require_POST
 def vote(request):
     if not request.user.is_authenticated:
         return JsonResponse({'redirect': request.build_absolute_uri(app_settings.LOGIN_URL)})
+
     data = request.POST
-    # обработка лайков
+
+    object_type = data['object_type']
+    action = data['action']
+    object_id = data['id']
+
+    if object_type == 'question':
+        # проверяем, есть ли уже оценка
+        try:
+            existing_vote = QuestionVote.objects.get(
+                user_id=request.user.profile.id,
+                related_object_id=object_id
+            )
+        except QuestionVote.DoesNotExist:
+            existing_vote = None
+
+        if existing_vote:
+            # уже была оценка
+            existing_vote.delete()  # удаляем существующую оценку
+            if existing_vote.mark == VoteManager.LIKE:
+                # меняем оценку на дизлайк
+                if action == 'downvote':
+                    QuestionVote.objects.create(
+                        user_id=request.user.profile.id,
+                        related_object_id=object_id,
+                        mark=VoteManager.DISLIKE
+                    )
+            else:
+                # меняем оценку на лайк
+                if action == 'upvote':
+                    QuestionVote.objects.create(
+                        user_id=request.user.profile.id,
+                        related_object_id=object_id,
+                        mark=VoteManager.LIKE
+                    )
+        else:
+            QuestionVote.objects.create(
+                user_id=request.user.profile.id,
+                related_object_id=object_id,
+                mark=VoteManager.LIKE
+            )
+
+        question = Question.objects.get(id=object_id)
+        question.update_rating()
+
     return JsonResponse(data)

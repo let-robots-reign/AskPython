@@ -8,14 +8,14 @@ $(document).ready(function () {
 
         upvote_button.on('click', function () {
             const id = $(this).attr('data-id')
-            const vote_type = $(this).attr('data-type')
+            const object_type = $(this).attr('data-type')
 
             $.post({
                 url: '/vote/',
                 data: {
                     id: id,
                     action: "upvote",
-                    vote_type: vote_type
+                    object_type: object_type
                 }
             }).done(function (data) {
                 if (data['redirect']) {
@@ -42,14 +42,14 @@ $(document).ready(function () {
 
         downvote_button.on('click', function () {
             const id = $(this).attr('data-id')
-            const vote_type = $(this).attr('data-type')
+            const object_type = $(this).attr('data-type')
 
             $.post({
                 url: '/vote/',
                 data: {
                     id: id,
                     action: "downvote",
-                    vote_type: vote_type
+                    object_type: object_type
                 }
             }).done(function (data) {
                 if (data['redirect']) {
