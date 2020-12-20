@@ -6,9 +6,11 @@ from app.models import *
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.http import JsonResponse
+from django.http import HttpResponseForbidden
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.conf import settings as app_settings
 from app.forms import *
 
 import logging
@@ -55,6 +57,7 @@ def question_page(request, pk):
     answers = question.answers.best_answers()
     page = paginate(answers, request, 20)
     if not request.user.is_authenticated:
+        # showing page without answer form
         return render(request, 'question_page.html', {
             'question': question,
             'page_obj': page
@@ -137,6 +140,8 @@ def logout(request):
 
 
 def signup(request):
+    if request.user.is_authenticated:
+        return HttpResponseForbidden("You already signed up")
     if request.method == 'GET':
         request.session['next_page'] = request.GET.get('next', '/')
         form = SignupForm()
@@ -181,9 +186,9 @@ def settings(request):
 
 
 @require_POST
-@login_required
 def vote(request):
-
+    if not request.user.is_authenticated:
+        return JsonResponse({'redirect': request.build_absolute_uri(app_settings.LOGIN_URL)})
     data = request.POST
     # обработка лайков
     return JsonResponse(data)

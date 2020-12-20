@@ -7,53 +7,71 @@ $(document).ready(function () {
         let downvote_button = $(this).find('.downvote-btn')
 
         upvote_button.on('click', function () {
-            if (!upvote_pressed) {
-                if (downvote_pressed) {
-                    downvote_button.addClass('btn-secondary').removeClass('btn-danger')
-                    post_rating.text(parseInt(post_rating.text()) + 1)
-                    downvote_pressed = false
-                }
-                upvote_button.addClass('btn-success').removeClass('btn-secondary')
-                post_rating.text(parseInt(post_rating.text()) + 1)
-                upvote_pressed = true
-            } else {
-                // отменить голос
-                upvote_button.addClass('btn-secondary').removeClass('btn-success')
-                post_rating.text(parseInt(post_rating.text()) - 1)
-                upvote_pressed = false
-            }
-
             const id = $(this).attr('data-id')
-            const action = $(this).attr('data-action')
             const vote_type = $(this).attr('data-type')
 
             $.post({
                 url: '/vote/',
                 data: {
                     id: id,
-                    action: action
+                    action: "upvote",
+                    vote_type: vote_type
                 }
-            }).done(function(data) {
-                console.log(data)
+            }).done(function (data) {
+                if (data['redirect']) {
+                    window.location = data['redirect'];
+                } else {
+                    if (!upvote_pressed) {
+                        if (downvote_pressed) {
+                            downvote_button.addClass('btn-secondary').removeClass('btn-danger')
+                            post_rating.text(parseInt(post_rating.text()) + 1)
+                            downvote_pressed = false
+                        }
+                        upvote_button.addClass('btn-success').removeClass('btn-secondary')
+                        post_rating.text(parseInt(post_rating.text()) + 1)
+                        upvote_pressed = true
+                    } else {
+                        // отменить голос
+                        upvote_button.addClass('btn-secondary').removeClass('btn-success')
+                        post_rating.text(parseInt(post_rating.text()) - 1)
+                        upvote_pressed = false
+                    }
+                }
             })
         })
 
         downvote_button.on('click', function () {
-            if (!downvote_pressed) {
-                if (upvote_pressed) {
-                    upvote_button.addClass('btn-secondary').removeClass('btn-success')
-                    post_rating.text(parseInt(post_rating.text()) - 1)
-                    upvote_pressed = false
+            const id = $(this).attr('data-id')
+            const vote_type = $(this).attr('data-type')
+
+            $.post({
+                url: '/vote/',
+                data: {
+                    id: id,
+                    action: "downvote",
+                    vote_type: vote_type
                 }
-                downvote_button.addClass('btn-danger').removeClass('btn-secondary')
-                post_rating.text(parseInt(post_rating.text()) - 1)
-                downvote_pressed = true
-            } else {
-                // отменить голос
-                downvote_button.addClass('btn-secondary').removeClass('btn-danger')
-                post_rating.text(parseInt(post_rating.text()) + 1)
-                downvote_pressed = false
-            }
+            }).done(function (data) {
+                if (data['redirect']) {
+                    window.location = data['redirect'];
+                } else {
+                    if (!downvote_pressed) {
+                        if (upvote_pressed) {
+                            upvote_button.addClass('btn-secondary').removeClass('btn-success')
+                            post_rating.text(parseInt(post_rating.text()) - 1)
+                            upvote_pressed = false
+                        }
+                        downvote_button.addClass('btn-danger').removeClass('btn-secondary')
+                        post_rating.text(parseInt(post_rating.text()) - 1)
+                        downvote_pressed = true
+                    } else {
+                        // отменить голос
+                        downvote_button.addClass('btn-secondary').removeClass('btn-danger')
+                        post_rating.text(parseInt(post_rating.text()) + 1)
+                        downvote_pressed = false
+                    }
+                }
+            })
         })
     })
 })
