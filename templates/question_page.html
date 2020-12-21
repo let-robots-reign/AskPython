@@ -28,7 +28,7 @@
             </div>
         </form>
     {% else %}
-        <a href="{% url 'login' %}?continue={{ request.path }}" class="btn btn-success">Войдите, чтобы оставить ответ</a>
+        <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-success">Войдите, чтобы оставить ответ</a>
     {% endif %}
 
 {% endblock main-content %}
@@ -39,4 +39,5 @@
 
 {% block link-js %}
     <script src="{% static 'js/likes.js' %}"></script>
+    <script src="{% static 'js/mark_correct.js' %}"></script>
 {% endblock link-js %}

@@ -33,6 +33,7 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('edit/', views.settings, name='settings'),
     path('vote/', views.vote, name='vote'),
+    path('mark_correct/', views.mark_correct, name='mark_correct'),
     path('tag/<str:tag>', views.tag_questions, name='tag_questions'),
     path('', views.new_questions, name='root'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

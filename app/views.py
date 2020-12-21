@@ -266,4 +266,30 @@ def vote(request):
         answer = Answer.objects.get(id=object_id)
         answer.update_rating()
 
-    return JsonResponse(data)
+    return JsonResponse({'status': 'success'})
+
+
+@require_POST
+def mark_correct(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'redirect': request.build_absolute_uri(app_settings.LOGIN_URL)})
+
+    data = request.POST
+    question_id = data['qid']
+    answer_id = data['ansid']
+    logger.error(question_id)
+    logger.error(Question.objects.get(id=question_id))
+    logger.error(Question.objects.get(id=question_id).author)
+    logger.error(Question.objects.get(id=question_id).author.user)
+    if request.user != Question.objects.get(id=question_id).author.user:
+        return JsonResponse({'error': 'Вы не являетесь автором вопроса'})
+
+    # ответ, который пользователь хочет отметить
+    answer = Answer.objects.get(id=answer_id)
+    # проверяем, что нет уже отмеченных
+    if any(ans.is_marked_correct and ans != answer for ans in Question.objects.get(id=question_id).answers.all()):
+        return JsonResponse({'error': 'Вы уже отмечали правильным другой ответ'})
+
+    answer.is_marked_correct = not answer.is_marked_correct
+    answer.save()
+    return JsonResponse({'status': 'success'})
