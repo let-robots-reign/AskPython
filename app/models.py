@@ -107,8 +107,9 @@ class Answer(models.Model):
 
     def get_vote_by_user(self, user):
         try:
-            return self.answer_votes.get(user_id=user.id).mark
-        except QuestionVote.DoesNotExist:
+            v = self.answer_votes.get(user_id=user.id)
+            return v.mark
+        except AnswerVote.DoesNotExist:
             return None
 
     class Meta:

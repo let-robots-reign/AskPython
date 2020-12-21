@@ -202,53 +202,68 @@ def vote(request):
     if not request.user.is_authenticated:
         return JsonResponse({'redirect': request.build_absolute_uri(app_settings.LOGIN_URL)})
 
+    def check_existing_vote(obj_type, user_id, obj_id):
+        if obj_type == 'question':
+            try:
+                existing_vote = QuestionVote.objects.get(
+                    user_id=user_id,
+                    related_object_id=obj_id
+                )
+            except QuestionVote.DoesNotExist:
+                existing_vote = None
+        else:
+            try:
+                existing_vote = AnswerVote.objects.get(
+                    user_id=user_id,
+                    related_object_id=obj_id
+                )
+            except AnswerVote.DoesNotExist:
+                existing_vote = None
+
+        return existing_vote
+
+    def create_vote_for_object(obj_type, user_id, obj_id, mark):
+        if obj_type == 'question':
+            return QuestionVote.objects.create(
+                user_id=user_id,
+                related_object_id=obj_id,
+                mark=mark
+            )
+        else:
+            return AnswerVote.objects.create(
+                user_id=user_id,
+                related_object_id=obj_id,
+                mark=mark
+            )
+
     data = request.POST
 
     object_type = data['object_type']
     action = data['action']
     object_id = data['id']
+    logger.error(f'{object_type}, {action}, {object_id}')
+    # проверяем, есть ли уже оценка
+    existing = check_existing_vote(object_type, request.user.id, object_id)
+    if existing:
+        # уже была оценка
+        existing.delete()  # удаляем существующую оценку
+        if existing.mark == VoteManager.LIKE:
+            # меняем оценку на дизлайк
+            if action == 'downvote':
+                create_vote_for_object(object_type, request.user.id, object_id, VoteManager.DISLIKE)
+        else:
+            # меняем оценку на лайк
+            if action == 'upvote':
+                create_vote_for_object(object_type, request.user.id, object_id, VoteManager.LIKE)
+    else:
+        mark = VoteManager.LIKE if action == 'upvote' else VoteManager.DISLIKE
+        create_vote_for_object(object_type, request.user.id, object_id, mark)
 
     if object_type == 'question':
-        # проверяем, есть ли уже оценка
-        try:
-            existing_vote = QuestionVote.objects.get(
-                user_id=request.user.profile.id,
-                related_object_id=object_id
-            )
-        except QuestionVote.DoesNotExist:
-            existing_vote = None
-
-        if existing_vote:
-            # уже была оценка
-            existing_vote.delete()  # удаляем существующую оценку
-            if existing_vote.mark == VoteManager.LIKE:
-                # меняем оценку на дизлайк
-                if action == 'downvote':
-                    QuestionVote.objects.create(
-                        user_id=request.user.profile.id,
-                        related_object_id=object_id,
-                        mark=VoteManager.DISLIKE
-                    )
-            else:
-                # меняем оценку на лайк
-                if action == 'upvote':
-                    QuestionVote.objects.create(
-                        user_id=request.user.profile.id,
-                        related_object_id=object_id,
-                        mark=VoteManager.LIKE
-                    )
-        else:
-            QuestionVote.objects.create(
-                user_id=request.user.profile.id,
-                related_object_id=object_id,
-                mark=VoteManager.LIKE if action == 'upvote' else VoteManager.DISLIKE
-            )
-
         question = Question.objects.get(id=object_id)
         question.update_rating()
-
-    elif object_type == 'answer':
-        # TODO: доделать аналогично
-        pass
+    else:
+        answer = Answer.objects.get(id=object_id)
+        answer.update_rating()
 
     return JsonResponse(data)

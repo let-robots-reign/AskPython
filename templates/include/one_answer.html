@@ -6,12 +6,26 @@
             <img src="{{ answer.author.profile_pic.url }}" alt="Аватар">
             <p class="user-nickname">{{ answer.author.nickname }}</p>
             <div class="like-dislike">
-                <button class="upvote-btn btn btn-secondary btn-circle" data-type="answer" data-id="{{ answer.id }}">
-                    <i class="fas fa-chevron-up"></i>
+                {% if answer.current_vote == 1 %}
+                    <button class="upvote-btn btn btn-success btn-circle" data-type="answer"
+                            data-id="{{ answer.id }}">
+                {% else %}
+                    <button class="upvote-btn btn btn-secondary btn-circle" data-type="answer"
+                            data-id="{{ answer.id }}">
+                {% endif %}
+                <i class="fas fa-chevron-up"></i>
                 </button>
+
                 <i class="post-rating">{{ answer.rating }}</i>
-                <button class="downvote-btn btn btn-secondary btn-circle" data-type="answer" data-id="{{ answer.id }}">
-                    <i class="fas fa-chevron-down"></i>
+
+                {% if answer.current_vote == -1 %}
+                    <button class="downvote-btn btn btn-danger btn-circle" data-type="answer"
+                            data-id="{{ answer.id }}">
+                {% else %}
+                    <button class="downvote-btn btn btn-secondary btn-circle" data-type="answer"
+                            data-id="{{ answer.id }}">
+                {% endif %}
+                <i class="fas fa-chevron-down"></i>
                 </button>
             </div>
         </div>

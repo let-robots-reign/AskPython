@@ -1,11 +1,17 @@
 $(document).ready(function () {
     $('.like-dislike').each(function () {
-        // TODO: правильно инициализировать upvote_pressed и downvote_pressed
-        let upvote_pressed = false
-        let downvote_pressed = false
         let post_rating = $(this).find('.post-rating')
         let upvote_button = $(this).find('.upvote-btn')
         let downvote_button = $(this).find('.downvote-btn')
+
+        let upvote_pressed = false
+        let downvote_pressed = false
+        if (upvote_button.hasClass('btn-success')) {
+            upvote_pressed = true
+        }
+        if (downvote_button.hasClass('btn-danger')) {
+            downvote_pressed = true
+        }
 
         upvote_button.on('click', function () {
             const id = $(this).attr('data-id')
