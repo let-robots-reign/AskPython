@@ -24,7 +24,6 @@ HELLO_WORLD = b"Hello world!\n"
 
 
 def simple_app(environ, start_response):
-    """Simplest possible application object"""
     # GET
     query = parse_qs(environ['QUERY_STRING'])
     get_parameters = b'GET: ' + json.dumps(query).encode('utf-8') if query else b''

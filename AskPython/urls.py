@@ -35,5 +35,6 @@ urlpatterns = [
     path('vote/', views.vote, name='vote'),
     path('mark_correct/', views.mark_correct, name='mark_correct'),
     path('tag/<str:tag>', views.tag_questions, name='tag_questions'),
+    path('print_parameters/', views.print_parameters, name='print_parameters'),
     path('', views.new_questions, name='root'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

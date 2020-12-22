@@ -6,7 +6,7 @@ from app.models import *
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.http import JsonResponse
-from django.http import HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -293,3 +293,13 @@ def mark_correct(request):
     answer.is_marked_correct = not answer.is_marked_correct
     answer.save()
     return JsonResponse({'status': 'success'})
+
+
+def print_parameters(request):
+    if request.GET:
+        html = f"<html><body>GET: {dict(request.GET)}</body></html>"
+    elif request.POST:
+        html = f"<html><body>POST: {dict(request.POST)}</body></html>"
+    else:
+        html = f"<html><body>No params!</body></html>"
+    return HttpResponse(html)
