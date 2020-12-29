@@ -1,13 +1,15 @@
 $(document).ready(function () {
     let cent = new Centrifuge('ws://127.0.0.1:8000/connection/websocket')
     cent.setToken($('#jwt_token').attr('data-token'))
-    cent.subscribe('question_vote', function(msg) {
-        console.log('Someone voted for question')
+    cent.subscribe('question_vote', function (msg) {
+        addQuestionVote(msg)
     })
-    cent.subscribe('answers_vote', function(msg) {
-        console.log('Someone voted for an answer')
+    cent.subscribe('answers_vote', function (msg) {
+        addAnswerVote(msg)
     })
     cent.connect()
+
+    var vote_from_current_user = false
 
     $('.like-dislike').each(function () {
         let post_rating = $(this).find('.post-rating')
@@ -24,6 +26,7 @@ $(document).ready(function () {
         }
 
         upvote_button.on('click', function () {
+            vote_from_current_user = true
             const id = $(this).attr('data-id')
             const object_type = $(this).attr('data-type')
 
@@ -58,6 +61,7 @@ $(document).ready(function () {
         })
 
         downvote_button.on('click', function () {
+            vote_from_current_user = true
             const id = $(this).attr('data-id')
             const object_type = $(this).attr('data-type')
 
@@ -91,4 +95,28 @@ $(document).ready(function () {
             })
         })
     })
+
+    function addQuestionVote(msg) {
+        if (!vote_from_current_user) {
+            const data = msg['data']
+            const currentRating = $(`#question-rating-${data['question_id']}`)
+            if (data["mark"] === 1) {
+                currentRating.text(parseInt(currentRating.text()) + 1)
+            } else {
+                currentRating.text(parseInt(currentRating.text()) - 1)
+            }
+        }
+    }
+
+    function addAnswerVote(msg) {
+        if (!vote_from_current_user) {
+            const data = msg['data']
+            const currentRating = $(`#answer-rating-${data['answer_id']}`)
+            if (data["mark"] === 1) {
+                currentRating.text(parseInt(currentRating.text()) + 1)
+            } else {
+                currentRating.text(parseInt(currentRating.text()) - 1)
+            }
+        }
+    }
 })

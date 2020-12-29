@@ -16,7 +16,7 @@
                 <i class="fas fa-chevron-up"></i>
                 </button>
 
-                <i class="post-rating">{{ answer.rating }}</i>
+                <i class="post-rating" id="answer-rating-{{ answer.id }}">{{ answer.rating }}</i>
 
                 {% if answer.current_vote == -1 %}
                     <button class="downvote-btn btn btn-danger btn-circle" data-type="answer"
