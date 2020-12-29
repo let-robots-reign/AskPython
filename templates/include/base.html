@@ -33,24 +33,30 @@
                     <h2>Популярные теги</h2>
                     <div class="bg-light shadow-sm" id="tags-container">
                         <ul class="tags-list">
-                            <li><a href="{% url 'tag_questions' tag="Django" %}">Django</a></li>
-                            <li><a href="{% url 'tag_questions' tag="numpy" %}">numpy</a></li>
-                            <li><a href="{% url 'tag_questions' tag="Flask" %}">Flask</a></li>
-                            <li><a href="{% url 'tag_questions' tag="MySql" %}">MySQL</a></li>
-                            <li><a href="{% url 'tag_questions' tag="Python" %}">Python</a></li>
-                            <li><a href="{% url 'tag_questions' tag="Android" %}">Android</a></li>
-                            <li><a href="{% url 'tag_questions' tag="verylooooongtagname" %}">verylooooongtagname</a></li>
-                            <li><a href="{% url 'tag_questions' tag="iOS" %}">iOS</a></li>
-                            <li><a href="{% url 'tag_questions' tag="Linux" %}">Linux</a></li>
+                            {% for tag in best_tags %}
+                                <li><a href="{% url 'tag_questions' tag %}">{{ tag }}</a></li>
+                            {% endfor %}
+{#                            <li><a href="{% url 'tag_questions' tag="Django" %}">Django</a></li>#}
+{#                            <li><a href="{% url 'tag_questions' tag="numpy" %}">numpy</a></li>#}
+{#                            <li><a href="{% url 'tag_questions' tag="Flask" %}">Flask</a></li>#}
+{#                            <li><a href="{% url 'tag_questions' tag="MySql" %}">MySQL</a></li>#}
+{#                            <li><a href="{% url 'tag_questions' tag="Python" %}">Python</a></li>#}
+{#                            <li><a href="{% url 'tag_questions' tag="Android" %}">Android</a></li>#}
+{#                            <li><a href="{% url 'tag_questions' tag="verylooooongtagname" %}">verylooooongtagname</a></li>#}
+{#                            <li><a href="{% url 'tag_questions' tag="iOS" %}">iOS</a></li>#}
+{#                            <li><a href="{% url 'tag_questions' tag="Linux" %}">Linux</a></li>#}
                         </ul>
                     </div>
 
                     <h2>Лучшие пользователи</h2>
                     <div class="bg-light shadow-sm" id="best-users-container">
                         <ul>
-                            <li><a href="#">van_rossum_1956</a></li>
-                            <li><a href="#">lutz_2k20</a></li>
-                            <li><a href="#">let_robots_reign</a></li>
+                            {% for profile in best_profiles %}
+                                <li><a href="#">{{ profile }}</a></li>
+                            {% endfor %}
+{#                            <li><a href="#">van_rossum_1956</a></li>#}
+{#                            <li><a href="#">lutz_2k20</a></li>#}
+{#                            <li><a href="#">let_robots_reign</a></li>#}
                         </ul>
                     </div>
                 {% endblock aside-right %}

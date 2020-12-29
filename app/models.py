@@ -5,12 +5,20 @@ from django.utils import timezone
 from django_resized import ResizedImageField
 
 
+class ProfileManager(models.Manager):
+    def get_best_profiles(self):
+        # TODO: реальный запрос лучших пользователей
+        return self.all()[:10]
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     nickname = models.CharField(max_length=30, verbose_name='Ник пользователя')
     # resizing the picture to not break the html markup
     profile_pic = ResizedImageField(size=[50, 64], quality=100, upload_to='avatars/%Y/%m/%d',
                                     default='avatars/default_pic.png', verbose_name='Аватар')
+
+    objects = ProfileManager()
 
     def __str__(self):
         return self.nickname
@@ -20,8 +28,16 @@ class Profile(models.Model):
         verbose_name_plural = 'Пользователи'
 
 
+class TagManager(models.Manager):
+    def get_best_tags(self):
+        # TODO: реальный запрос лучших тегов
+        return self.all()[:10]
+
+
 class Tag(models.Model):
     tag_name = models.CharField(max_length=30, unique=True, verbose_name='Название тега')
+
+    objects = TagManager()
 
     def __str__(self):
         return self.tag_name

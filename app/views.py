@@ -241,7 +241,6 @@ def vote(request):
     object_type = data['object_type']
     action = data['action']
     object_id = data['id']
-    logger.error(f'{object_type}, {action}, {object_id}')
     # проверяем, есть ли уже оценка
     existing = check_existing_vote(object_type, request.user.id, object_id)
     if existing:
@@ -277,10 +276,6 @@ def mark_correct(request):
     data = request.POST
     question_id = data['qid']
     answer_id = data['ansid']
-    logger.error(question_id)
-    logger.error(Question.objects.get(id=question_id))
-    logger.error(Question.objects.get(id=question_id).author)
-    logger.error(Question.objects.get(id=question_id).author.user)
     if request.user != Question.objects.get(id=question_id).author.user:
         return JsonResponse({'error': 'Вы не являетесь автором вопроса'})
 
