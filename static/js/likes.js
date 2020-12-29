@@ -1,6 +1,7 @@
 $(document).ready(function () {
     let cent = new Centrifuge('ws://127.0.0.1:8000/connection/websocket')
     cent.setToken($('#jwt_token').attr('data-token'))
+
     cent.subscribe('question_vote', function (msg) {
         addQuestionVote(msg)
     })
@@ -43,6 +44,7 @@ $(document).ready(function () {
                     object_type: object_type
                 }
             }).done(function (data) {
+                vote_from_current_user = false
                 if (data['redirect']) {
                     window.location = data['redirect'];
                 } else {
@@ -78,6 +80,7 @@ $(document).ready(function () {
                     object_type: object_type
                 }
             }).done(function (data) {
+                vote_from_current_user = false
                 if (data['redirect']) {
                     window.location = data['redirect'];
                 } else {

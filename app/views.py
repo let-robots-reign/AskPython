@@ -77,7 +77,7 @@ def question_page(request, pk):
         })
 
     # формируем token для фронтенда
-    channel_id = str(request.user.id)
+    channel_id = str(question.id)
     token = jwt.encode({"sub": channel_id}, app_settings.CENTRIFUGO_SECRET_KEY)
 
     if request.method == 'GET':
@@ -234,9 +234,11 @@ def vote(request):
         return existing_vote
 
     def create_vote_for_object(obj_type, user_id, obj_id, mark):
+        # TODO: make global
         client = Client('http://127.0.0.1:8000', api_key=app_settings.CENTRIFUGO_API_KEY, timeout=1)
 
         if obj_type == 'question':
+            # TODO: current rating instead of mark!
             client.publish('question_vote', {
                 'user_id': user_id,
                 'question_id': obj_id,
@@ -248,6 +250,7 @@ def vote(request):
                 mark=mark
             )
         else:
+            # TODO: ограничить канал
             client.publish('answers_vote', {
                 'user_id': user_id,
                 'answer_id': obj_id,

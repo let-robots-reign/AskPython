@@ -7,8 +7,7 @@ from django_resized import ResizedImageField
 
 class ProfileManager(models.Manager):
     def get_best_profiles(self):
-        # TODO: реальный запрос лучших пользователей
-        return self.all()[:10]
+        return self.annotate(count=models.Count('question') + models.Count('answer')).order_by('-count')[:10]
 
 
 class Profile(models.Model):
@@ -30,8 +29,7 @@ class Profile(models.Model):
 
 class TagManager(models.Manager):
     def get_best_tags(self):
-        # TODO: реальный запрос лучших тегов
-        return self.all()[:10]
+        return self.annotate(count=models.Count('question')).order_by('-count')[:10]
 
 
 class Tag(models.Model):
@@ -91,8 +89,9 @@ class Question(models.Model):
 
     class Meta:
         indexes = [
-            models.Index(fields=['author']),
-            models.Index(fields=['title'])
+            models.Index(fields=['title']),
+            models.Index(fields=['creation_date']),
+            models.Index(fields=['rating'])
         ]
 
         verbose_name = 'Вопрос'
