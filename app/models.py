@@ -90,6 +90,11 @@ class Question(models.Model):
             return None
 
     class Meta:
+        indexes = [
+            models.Index(fields=['author']),
+            models.Index(fields=['title'])
+        ]
+
         verbose_name = 'Вопрос'
         verbose_name_plural = 'Вопросы'
 
