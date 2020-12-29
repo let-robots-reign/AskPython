@@ -13,6 +13,8 @@ from django.views.decorators.http import require_POST
 from django.conf import settings as app_settings
 from app.forms import *
 
+import jwt
+from cent import Client
 import logging
 
 logger = logging.getLogger(__name__)
@@ -88,10 +90,15 @@ def question_page(request, pk):
             response['Location'] += f'#ans{answer.id}'
             return response
 
+    # формируем token для фронтенда
+    channel_id = str(request.user.id)
+    token = jwt.encode({"sub": channel_id}, app_settings.CENTRIFUGO_SECRET_KEY)
+
     return render(request, 'question_page.html', {
         'question': add_vote_to_object(question, request.user),
         'page_obj': page,
-        'form': form
+        'form': form,
+        'jwt_token': token
     })
 
 
@@ -223,13 +230,25 @@ def vote(request):
         return existing_vote
 
     def create_vote_for_object(obj_type, user_id, obj_id, mark):
+        client = Client('http://127.0.0.1:8000', api_key=app_settings.CENTRIFUGO_API_KEY, timeout=1)
+
         if obj_type == 'question':
+            client.publish('question_vote', {
+                'user_id': user_id,
+                'question_id': obj_id,
+                'mark': mark
+            })
             return QuestionVote.objects.create(
                 user_id=user_id,
                 related_object_id=obj_id,
                 mark=mark
             )
         else:
+            client.publish('answers_vote', {
+                'user_id': user_id,
+                'answer_id': obj_id,
+                'mark': mark
+            })
             return AnswerVote.objects.create(
                 user_id=user_id,
                 related_object_id=obj_id,

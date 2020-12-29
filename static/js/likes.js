@@ -1,4 +1,14 @@
 $(document).ready(function () {
+    let cent = new Centrifuge('ws://127.0.0.1:8000/connection/websocket')
+    cent.setToken($('#jwt_token').attr('data-token'))
+    cent.subscribe('question_vote', function(msg) {
+        console.log('Someone voted for question')
+    })
+    cent.subscribe('answers_vote', function(msg) {
+        console.log('Someone voted for an answer')
+    })
+    cent.connect()
+
     $('.like-dislike').each(function () {
         let post_rating = $(this).find('.post-rating')
         let upvote_button = $(this).find('.upvote-btn')

@@ -8,6 +8,8 @@
 {% endblock link-css %}
 
 {% block main-content %}
+    <div id='jwt_token' data-token="{{ jwt_token }}"></div>
+
     {% include 'include/one_question.html' %}
 
     <div class="divider py-1 bg-light my-3"></div>
