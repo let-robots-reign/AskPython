@@ -7,6 +7,11 @@ $(document).ready(function () {
     cent.subscribe('answers_vote', function (msg) {
         addAnswerVote(msg)
     })
+
+    cent.subscribe('new_answer', function(msg) {
+        renderAlert(msg)
+    })
+
     cent.connect()
 
     var vote_from_current_user = false
@@ -118,5 +123,9 @@ $(document).ready(function () {
                 currentRating.text(parseInt(currentRating.text()) - 1)
             }
         }
+    }
+
+    function renderAlert(msg) {
+        $('#new-answers-alert').css('display', 'block')
     }
 })

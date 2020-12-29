@@ -76,6 +76,10 @@ def question_page(request, pk):
             'page_obj': page
         })
 
+    # формируем token для фронтенда
+    channel_id = str(request.user.id)
+    token = jwt.encode({"sub": channel_id}, app_settings.CENTRIFUGO_SECRET_KEY)
+
     if request.method == 'GET':
         form = AnswerForm()
     else:
@@ -88,11 +92,11 @@ def question_page(request, pk):
 
             response = redirect(reverse('question_page', kwargs={'pk': question.id}))
             response['Location'] += f'#ans{answer.id}'
-            return response
 
-    # формируем token для фронтенда
-    channel_id = str(request.user.id)
-    token = jwt.encode({"sub": channel_id}, app_settings.CENTRIFUGO_SECRET_KEY)
+            client = Client('http://127.0.0.1:8000', api_key=app_settings.CENTRIFUGO_API_KEY, timeout=1)
+            client.publish('new_answer', {})
+
+            return response
 
     return render(request, 'question_page.html', {
         'question': add_vote_to_object(question, request.user),

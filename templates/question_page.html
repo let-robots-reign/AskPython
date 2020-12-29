@@ -14,6 +14,10 @@
 
     <div class="divider py-1 bg-light my-3"></div>
 
+    <div id="new-answers-alert" class="bg-light shadow-sm">
+        <a href="">Есть новые ответы! Перезагрузите страницу</a>
+    </div>
+
     {% for answer in page_obj.object_list %}
         {% include 'include/one_answer.html' %}
     {% endfor %}

@@ -25,3 +25,10 @@
 .mark-error {
     visibility: hidden;
 }
+
+#new-answers-alert {
+    padding: 7px;
+    text-align: center;
+    margin-bottom: 15px;
+    display: none;
+}
