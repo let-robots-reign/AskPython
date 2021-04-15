@@ -6,27 +6,61 @@
             <img src="{{ answer.author.profile_pic.url }}" alt="Аватар">
             <p class="user-nickname">{{ answer.author.nickname }}</p>
             <div class="like-dislike">
-                <button class="upvote-btn btn btn-secondary btn-circle"><i class="fas fa-chevron-up"></i>
+                {% if answer.current_vote == 1 %}
+                    <button class="upvote-btn btn btn-success btn-circle" data-type="answer"
+                            data-id="{{ answer.id }}">
+                {% else %}
+                    <button class="upvote-btn btn btn-secondary btn-circle" data-type="answer"
+                            data-id="{{ answer.id }}">
+                {% endif %}
+                <i class="fas fa-chevron-up"></i>
                 </button>
-                <i class="post-rating">{{ answer.rating }}</i>
-                <button class="downvote-btn btn btn-secondary btn-circle"><i
-                        class="fas fa-chevron-down"></i></button>
+
+                <i class="post-rating" id="answer-rating-{{ answer.id }}">{{ answer.rating }}</i>
+
+                {% if answer.current_vote == -1 %}
+                    <button class="downvote-btn btn btn-danger btn-circle" data-type="answer"
+                            data-id="{{ answer.id }}">
+                {% else %}
+                    <button class="downvote-btn btn btn-secondary btn-circle" data-type="answer"
+                            data-id="{{ answer.id }}">
+                {% endif %}
+                <i class="fas fa-chevron-down"></i>
+                </button>
             </div>
         </div>
         <div class="col-10 right-side">
             <p class="question-description">{{ answer.content|linebreaks }}</p>
             <div class="bottom-part">
-                <div class="form-check">
-                    {% if answer.is_marked_correct %}
-                        <input class="form-check-input" type="checkbox" id="correct-checkbox-2" checked>
-                    {% else %}
-                        <input class="form-check-input" type="checkbox" id="correct-checkbox-2">
-                    {% endif %}
-                    <label class="form-check-label" for="correct-checkbox-2">
-                        Отметить как решение
-                    </label>
-                </div>
+                {% if request.user == answer.related_question.author.user %}
+                    <div class="form-check">
+                        {% if answer.is_marked_correct %}
+                            <input class="form-check-input correct-checkbox" type="checkbox"
+                                   id="correct-checkbox-{{ answer.id }}" checked
+                                   data-answer-id="{{ answer.id }}" data-question-id="{{ answer.related_question.id }}">
+                            <label class="form-check-label right-answer-label" id="label-{{ answer.id }}"
+                                   for="correct-checkbox-{{ answer.id }}">
+                                Вы отметили этот ответ как правильный
+                            </label>
+                        {% else %}
+                            <input class="form-check-input correct-checkbox" type="checkbox"
+                                   id="correct-checkbox-{{ answer.id }}"
+                                   data-answer-id="{{ answer.id }}" data-question-id="{{ answer.related_question.id }}">
+                            <label class="form-check-label" id="label-{{ answer.id }}"
+                                   for="correct-checkbox-{{ answer.id }}">
+                                Отметить как решение
+                            </label>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div>
+                        {% if answer.is_marked_correct %}
+                            <p class="right-answer-label">Правильный ответ</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
                 <p class="creation-date text-muted">Опубликовано: {{ answer.creation_date }}</p>
+                <p class="text-danger" id="mark-error-{{ answer.id }}"></p>
             </div>
         </div>
     </div>

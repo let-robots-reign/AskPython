@@ -61,7 +61,9 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages'
+                'django.contrib.messages.context_processors.messages',
+                'AskPython.context_processors.best_profiles',
+                'AskPython.context_processors.best_tags'
             ]
         }
     }
@@ -76,6 +78,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3'
+    }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'default_cache',
     }
 }
 
@@ -124,3 +133,6 @@ MEDIA_URL = '/uploads/'
 MEDIA_ROOT = BASE_DIR / "uploads/"
 
 LOGIN_URL = '/login/'
+
+CENTRIFUGO_SECRET_KEY = "0a0021ae-1f14-47ae-93c5-dd2f310121b1"
+CENTRIFUGO_API_KEY = "9d7cbf70-6ee9-480e-8665-7fcde9a5b200"

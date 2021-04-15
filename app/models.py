@@ -5,12 +5,19 @@ from django.utils import timezone
 from django_resized import ResizedImageField
 
 
+class ProfileManager(models.Manager):
+    def get_best_profiles(self):
+        return self.annotate(count=models.Count('question') + models.Count('answer')).order_by('-count')[:10]
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     nickname = models.CharField(max_length=30, verbose_name='Ник пользователя')
     # resizing the picture to not break the html markup
-    profile_pic = ResizedImageField(size=[50, 64], quality=100, upload_to='avatars', default='avatars/default_pic.png',
-                                    verbose_name='Аватар')
+    profile_pic = ResizedImageField(size=[50, 64], quality=100, upload_to='avatars/%Y/%m/%d',
+                                    default='avatars/default_pic.png', verbose_name='Аватар')
+
+    objects = ProfileManager()
 
     def __str__(self):
         return self.nickname
@@ -20,8 +27,15 @@ class Profile(models.Model):
         verbose_name_plural = 'Пользователи'
 
 
+class TagManager(models.Manager):
+    def get_best_tags(self):
+        return self.annotate(count=models.Count('question')).order_by('-count')[:10]
+
+
 class Tag(models.Model):
     tag_name = models.CharField(max_length=30, unique=True, verbose_name='Название тега')
+
+    objects = TagManager()
 
     def __str__(self):
         return self.tag_name
@@ -55,6 +69,7 @@ class Question(models.Model):
                                    related_name="voted_questions", related_query_name="voted_questions")
 
     objects = QuestionManager()
+    current_vote = 0
 
     def __str__(self):
         return self.title
@@ -66,7 +81,19 @@ class Question(models.Model):
     def get_answers_count(self):
         return self.answers.count()
 
+    def get_vote_by_user(self, user):
+        try:
+            return self.question_votes.get(user_id=user.id).mark
+        except QuestionVote.DoesNotExist:
+            return None
+
     class Meta:
+        indexes = [
+            models.Index(fields=['title']),
+            models.Index(fields=['creation_date']),
+            models.Index(fields=['rating'])
+        ]
+
         verbose_name = 'Вопрос'
         verbose_name_plural = 'Вопросы'
 
@@ -86,9 +113,10 @@ class Answer(models.Model):
     is_marked_correct = models.BooleanField(default=False, verbose_name='Отмечен ли как верный')
     # users who voted for the answer
     votes = models.ManyToManyField('Profile', blank=True, verbose_name="Оценки вопроса", through='AnswerVote',
-                                   related_name="voted_answer", related_query_name="voted_answer")
+                                   related_name="voted_answers", related_query_name="voted_answer")
 
     objects = AnswerManager()
+    current_vote = 0
 
     def __str__(self):
         return self.content
@@ -96,6 +124,13 @@ class Answer(models.Model):
     def update_rating(self):
         self.rating = AnswerVote.objects.get_rating(self.id)
         self.save()
+
+    def get_vote_by_user(self, user):
+        try:
+            v = self.answer_votes.get(user_id=user.id)
+            return v.mark
+        except AnswerVote.DoesNotExist:
+            return None
 
     class Meta:
         verbose_name = 'Ответ'
@@ -107,10 +142,10 @@ class VoteManager(models.Manager):
     DISLIKE = -1
 
     def get_likes(self, pk):
-        return self.filter(id=pk, mark=VoteManager.LIKE).count()
+        return self.filter(related_object=pk, mark=VoteManager.LIKE).count()
 
     def get_dislikes(self, pk):
-        return self.filter(id=pk, mark=VoteManager.DISLIKE).count()
+        return self.filter(related_object=pk, mark=VoteManager.DISLIKE).count()
 
     def get_rating(self, pk):
         return self.get_likes(pk) - self.get_dislikes(pk)
@@ -120,10 +155,10 @@ class QuestionVote(models.Model):
     user = models.ForeignKey('Profile', on_delete=models.CASCADE, verbose_name='Кто оценил')
     mark = models.IntegerField(default=0,
                                verbose_name='Поставленная оценка')  # can be -1 = downvoted, 1 = upvoted
+    related_object = models.ForeignKey('Question', related_name='question_votes',
+                                       verbose_name='Оцениваемый вопрос', on_delete=models.CASCADE)
 
     objects = VoteManager()
-
-    related_question = models.ForeignKey('Question', verbose_name='Оцениваемый вопрос', on_delete=models.CASCADE)
 
     def __str__(self):
         return f'Оценка вопроса: {self.mark}'
@@ -137,10 +172,10 @@ class AnswerVote(models.Model):
     user = models.ForeignKey('Profile', on_delete=models.CASCADE, verbose_name='Кто оценил')
     mark = models.IntegerField(default=0,
                                verbose_name='Поставленная оценка')  # can be -1 = downvoted, 1 = upvoted
+    related_object = models.ForeignKey('Answer', related_name='answer_votes',
+                                       verbose_name='Оцениваемый ответ', on_delete=models.CASCADE)
 
     objects = VoteManager()
-
-    related_answer = models.ForeignKey('Answer', verbose_name='Оцениваемый ответ', on_delete=models.CASCADE)
 
     def __str__(self):
         return f'Оценка ответа: {self.mark}'
